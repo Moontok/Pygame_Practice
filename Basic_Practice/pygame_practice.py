@@ -8,7 +8,7 @@ height = 600
 screen = pg.display.set_mode((width, height), 0, 32)
 clock = pg.time.Clock()
 
-sprite_bug = pg.image.load("Basic_Practice/images/butterfly.png")
+sprite_bug = pg.image.load("images/butterfly.png")
 bug_size = 32
 sprite_bug = pg.transform.scale(sprite_bug, (bug_size, bug_size))
 bug_x, bug_y = 0, 0
