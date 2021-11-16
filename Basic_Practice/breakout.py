@@ -1,5 +1,4 @@
 import pygame as pg
-from pygame import math
 from pygame.locals import K_LEFT, K_RIGHT, K_SPACE
 from math import cos, sin, atan, radians, degrees
 
@@ -38,7 +37,8 @@ def main():
         brick_y = y * (brick_rect.height + brick_padding)
         for x in range(brick_columns):
             brick_x = x * (brick_rect.width + brick_padding) + brick_edge_padding
-            bricks.append((brick_x, brick_y))
+            bricks.append((brick_x, brick_y, brick_x + brick_rect.width, brick_y + brick_rect.height))
+
 
     clock = pg.time.Clock()
     game_over = False
@@ -80,10 +80,14 @@ def main():
                 ball_rect.top = paddle_rect.top - ball_rect.height
                 continue
 
-            delete_brick = None
-            for brick in bricks:
+            delete_brick = -1
+            for i,brick in enumerate(bricks):
                 if collide_with_brick(brick, ball_rect):
-                    print("hit brick")
+                    delete_brick = i
+
+            if delete_brick > -1:
+                bricks.pop(delete_brick)
+                delete_brick = -1
 
             # Ball collision with sides
             if ball_rect.left < 0:
@@ -106,12 +110,14 @@ def main():
 
 
 def collide_with_brick(brick, ball):
-    pass
+    if brick[0] < ball.left < brick[2] or brick[0] < ball.right < brick[2]:
+        if brick[3] > ball.bottom > brick[1] or brick[3] > ball.top > brick[1]:
+            return True
+    return False
 
 
 def collide_with_paddle(ball, paddle):
-
-    if paddle.left < ball.left < paddle.right or paddle.left < ball.right < paddle.left:
+    if paddle.left < ball.left < paddle.right or paddle.left < ball.right < paddle.right:
         if ball.bottom >= paddle.top:
             return True
     return False
