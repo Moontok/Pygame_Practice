@@ -29,7 +29,7 @@ def main():
     brick_prefab = brick_prefab.convert_alpha()
     brick_rect = brick_prefab.get_rect()
     bricks = []
-    brick_padding = 1
+    brick_padding = 15
     brick_rows = 5
     brick_columns = screen.get_width() // (brick_rect.width + brick_padding)
     brick_edge_padding = (screen.get_width() - (brick_rect.width + brick_padding) * brick_columns + brick_padding) // 2
