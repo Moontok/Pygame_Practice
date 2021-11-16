@@ -19,9 +19,10 @@ def main():
     ball_rect = ball.get_rect()
     ball_launched = False
     ball_speed = 10
-    ball_motion_angle = 45
+    ball_motion_angle = 60
     ball_motion = calculate_motion_vector_components(ball_motion_angle, ball_speed)
-    ball_rect.topleft = (paddle_rect.left + (paddle_rect.width - ball_rect.width) / 2, paddle_rect.top - ball_rect.height) 
+    ball_rect.topleft = (paddle_rect.left + (paddle_rect.width - ball_rect.width) / 2, paddle_rect.top - ball_rect.height)
+    ball_last_pos = ball_rect.topleft
 
 
     brick_prefab = pg.image.load("images/brick.png")
@@ -84,6 +85,19 @@ def main():
             for i,brick in enumerate(bricks):
                 if collide_with_brick(brick, ball_rect):
                     delete_brick = i
+                    if ball_rect.right > brick[0] and ball_rect.top < brick[3] and ball_last_pos.right < brick[0]:
+                        ball_motion[0] *= -1
+                    elif ball_rect.right > brick[0] and ball_rect.bottom > brick[1] and ball_last_pos.right < brick[0]:
+                        ball_motion[0] *= -1
+                    elif ball_rect.left < brick[2] and ball_rect.top < brick[3] and ball_last_pos.left > brick[2]:
+                        ball_motion[0] *= -1
+                    elif ball_rect.left < brick[2] and ball_rect.bottom > brick[1] and ball_last_pos.left > brick[2]:
+                        ball_motion[0] *= -1
+                    else:
+                        ball_motion[1] *= -1
+
+                    break
+
 
             if delete_brick > -1:
                 bricks.pop(delete_brick)
@@ -101,6 +115,8 @@ def main():
                 ball_rect.top = 0
             elif ball_rect.top > screen.get_height() - ball_rect.height:
                 ball_launched = False
+
+            ball_last_pos = ball_rect
         else:
             ball_rect.topleft = (paddle_rect.left + (paddle_rect.width - ball_rect.width) / 2, paddle_rect.top - ball_rect.height) 
 
@@ -110,9 +126,8 @@ def main():
 
 
 def collide_with_brick(brick, ball):
-    if brick[0] < ball.left < brick[2] or brick[0] < ball.right < brick[2]:
-        if brick[3] > ball.bottom > brick[1] or brick[3] > ball.top > brick[1]:
-            return True
+    if (brick[0] < ball.left < brick[2] or brick[0] < ball.right < brick[2]) and (brick[3] > ball.bottom > brick[1] or brick[3] > ball.top > brick[1]):
+        return True
     return False
 
 
