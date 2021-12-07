@@ -16,7 +16,7 @@ def main():
     
     # Music
     pg.mixer.music.load("audio/tranquil.ogg")
-    pg.mixer.music.set_volume(.1)
+    pg.mixer.music.set_volume(.2)
     pg.mixer.music.play(-1)
 
     # Game Running Loop

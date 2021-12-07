@@ -13,7 +13,7 @@ def main():
     column_padding = (screen.get_height() - rows * grid_size) // 2
 
     game_over = False
-    block = Square(0 + row_padding, 0 + column_padding, grid_size)
+    block = Left_L(0 + row_padding, 0 + column_padding, grid_size)
     clock = pg.time.Clock()
     fps = 5
 
