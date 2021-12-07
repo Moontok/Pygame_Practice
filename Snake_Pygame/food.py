@@ -1,25 +1,26 @@
 from random import randrange
-from pygame import draw
+from pygame import image
 
 class Food:
-    def __init__(self, x, y, size=10):
+    """ Food object to be consumed by snake. """
+
+    def __init__(self, x, y, size):
         self.x = x
         self.y = y
         self.size = size
-        self.color = (0, 255, 0)
-        self.spawned = False
+
+        self.egg = image.load("images/egg.png")
 
 
-    def random_spawn(self, screen):
+    def move_food_random(self, screen):
+        """ Move food item at random location on screen. """
+
         self.x = randrange(0, int(screen.get_width()) - self.size, self.size)
         self.y = randrange(0, int(screen.get_height()) - self.size, self.size)
-        self.spawned = True
 
     
     def draw_food(self, screen):
-        draw.rect(screen, self.color, [self.x, self.y, self.size, self.size])
+        """ Render food to the screen. """
 
-
-    def consume_food(self):
-        self.spawned = False
+        screen.blit(self.egg, [self.x, self.y, self.size, self.size])
 
