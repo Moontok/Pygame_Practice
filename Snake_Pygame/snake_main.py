@@ -12,10 +12,10 @@ def main():
 
     game_manager = Game_Manager(pg.time.Clock())
     screen = pg.display.set_mode((game_manager.window_width, game_manager.window_height))
-    
+
     # Music
     pg.mixer.music.load("audio/tranquil.ogg")
-    pg.mixer.music.set_volume(.2)
+    pg.mixer.music.set_volume(.1)
     pg.mixer.music.play(-1)
 
     # Game Running Loop
@@ -28,6 +28,8 @@ def main():
     
 def menu_loop(screen, game_manager):
     """ Loop that is executed when game is started or after the game over screen. """
+    
+    main_menu = pg.image.load("images/main_menu.png")
 
     while game_manager.in_main_menu:
         for event in pg.event.get():
@@ -38,18 +40,17 @@ def menu_loop(screen, game_manager):
                 game_manager.in_main_menu = False
                 game_manager.playing_game = True
         
-        screen.fill(pg.Color("black"))
+        screen.blit(main_menu, (0, 0))
+
 
         text_to_be_displayed = [
             "Hello and welcome to the game Snake!",
-            "",
             "Move the snake with the ARROW keys.",
             "Collect food without collided with the",
             "snakes body or the edges of the screen.",
-            "",
             "Press 'ENTER' to play the game."
         ]
-        display_text(text_to_be_displayed, game_manager, screen, pg.Color("cyan"))
+        display_text(text_to_be_displayed, game_manager, screen, pg.Color("white"), (45, 312))
 
         pg.display.update()
 
@@ -98,6 +99,7 @@ def game_loop(screen, game_manager):
 
 def game_over_loop(screen, game_manager):
     """ Loop for the game over screen. """
+    game_over_menu = pg.image.load("images/game_over.png")
 
     while game_manager.game_over_screen:
         for event in pg.event.get():
@@ -108,21 +110,21 @@ def game_over_loop(screen, game_manager):
                 game_manager.game_over_screen = False
                 game_manager.in_main_menu = True
         
-        screen.fill(pg.Color("black"))
+        screen.blit(game_over_menu, (0, 0))
 
-        text_to_be_displayed = ["GAME OVER!", "Press 'ENTER' to go to the main menu."]
-        display_text(text_to_be_displayed, game_manager, screen, pg.Color("red"))
+        text_to_be_displayed = ["", "GAME OVER! Thanks for playing!", "Press 'ENTER' to go to the main menu."]
+        display_text(text_to_be_displayed, game_manager, screen, pg.Color("white"), (45, 312))
 
         pg.display.update()
 
 
-def display_text(lines_of_text, game_manager, screen, color):
+def display_text(lines_of_text, game_manager, screen, color, position):
     """ Displays a list text to the screen. """
 
-    button_font = pg.font.SysFont("Arial", 20)
+    button_font = pg.font.SysFont("Console", 12)
     for line_number, line_text in enumerate(lines_of_text):
         text = button_font.render(line_text, True, color)
-        screen.blit(text, (10, 10 + line_number * 22, game_manager.window_width - 10, game_manager.window_width - 10))
+        screen.blit(text, (position[0], position[1] + line_number * 13, game_manager.window_width - 10, game_manager.window_width - 10))
 
 
 if __name__ == "__main__":
