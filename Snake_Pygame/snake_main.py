@@ -1,4 +1,5 @@
 import pygame as pg
+import sys
 
 from game_manager import Game_Manager
 from snake import Snake
@@ -25,6 +26,7 @@ def main():
         game_over_loop(screen, game_manager)
 
     pg.quit()
+    sys.exit()
     
 def menu_loop(screen, game_manager):
     """ Loop that is executed when game is started or after the game over screen. """
