@@ -12,11 +12,10 @@ class Button:
         self.text_rect = self.text.get_rect(center=self.rect.center)
 
         self.pressed = False
-        self.elevation = 5
+        self.elevation = 6
         self.dynamic_elevation = self.elevation
         self.original_y_pos = y
         self.bottom_rect = pg.Rect(x, y, width, self.elevation)
-        self.bottom_color = pg.Color("red")
 
 
     def draw(self, screen):

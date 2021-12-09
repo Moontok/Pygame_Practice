@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
 from button import Button
-from input_box import Input_Box
+from input_box import InputBox
 from label import Label
 
 def main():
@@ -15,7 +15,7 @@ def main():
     gui_font = pg.font.SysFont("Console", 30)
 
     input_label = Label(10, 10, 120, 41, pg.Color("grey"), pg.Color("white"), "Input:", gui_font, align="right")
-    input_box = Input_Box(130, 10, 260, 40, pg.Color("grey"), pg.Color("cyan"), gui_font)
+    input_box = InputBox(130, 10, 260, 40, pg.Color("grey"), pg.Color("cyan"), gui_font)
 
     output_label = Label(10, 110, 380, 40, pg.Color("grey"), pg.Color("white"), "", gui_font, align="center", border=2)
     calculate_button = Button(10, 60, 380, 40, pg.Color("grey"), pg.Color("white"), "CALCULATE", gui_font, action=lambda:calculate(input_box, output_label))

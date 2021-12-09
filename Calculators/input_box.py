@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-class Input_Box:
+class InputBox:
     """ Allows user enter input into the program from the keyboard. """
 
     def __init__(self, x, y, width, height, color, font_color, font, char_limit=14):
