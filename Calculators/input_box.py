@@ -2,36 +2,55 @@ import pygame as pg
 
 
 class Input_Box:
-    def __init__(self, x, y, width, height, color, font_color, font):
+    """ Allows user enter input into the program from the keyboard. """
+
+    def __init__(self, x, y, width, height, color, font_color, font, char_limit=14):
         self.rect = pg.Rect(x, y, width, height)
         self.color = color
         self.inactive_color = color
         self.active_color = font_color
-        self.text_input = ""
+        self.text = ""
         self.font = font
         self.font_color = font_color
-        self.text = None
+        self.rendered_text = None
         self.text_rect = pg.Rect(x, y, width, height)
-
         self.input_active = False
+        self.char_limit = char_limit
 
     
     def draw(self, screen):
+        """ Draw the input box. """
+
         pg.draw.rect(screen, self.color, self.rect, 2)
         
-        self.text = self.font.render(self.text_input, True, self.font_color)
-        screen.blit(self.text, (self.text_rect.x + 5, self.text_rect.y + 5))
+        self.rendered_text = self.font.render(self.text, True, self.font_color)
+        screen.blit(self.rendered_text, (self.text_rect.x + 5, self.text_rect.y + 5))
 
 
     def delete_char(self):
-        self.text_input = self.text_input[:-1]
+        """ Remove the last character entered into the input box. """
+
+        self.text = self.text[:-1]
+
+
+    def clear_text(self):
+        """ Reset the text of the input box. """
+
+        self.text = ""
 
 
     def add_char(self, char):
-        self.text_input += char
+        """ Add a character to the input box.
+        Does not accept alpha characters.
+        """
+
+        if not char.isalpha() and len(self.text) < self.char_limit:
+            self.text += char
 
 
     def check_if_clicked(self):
+        """ Check if user clicked into the input box. """
+
         mouse_pos = pg.mouse.get_pos()
         if self.rect.collidepoint(mouse_pos):            
             self.input_active = True

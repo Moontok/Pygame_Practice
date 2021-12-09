@@ -1,6 +1,8 @@
 import pygame as pg
 
 class Button:
+    """ Class to creat a button for the program. """
+
     def __init__(self, x, y, width, height, color, text_color, text, font, action=lambda:None):
         self.rect = pg.Rect(x, y, width, height)
         self.color = color
@@ -18,6 +20,8 @@ class Button:
 
 
     def draw(self, screen):
+        """ Draw the button to the screen. """
+
         self.rect.y = self.original_y_pos - self.dynamic_elevation
         self.text_rect.center = self.rect.center
 
@@ -31,6 +35,8 @@ class Button:
 
 
     def check_if_clicked(self):
+        """ Check if the button has been clicked. """
+
         mouse_pos = pg.mouse.get_pos()
         if self.rect.collidepoint(mouse_pos):
             if pg.mouse.get_pressed()[0]:
@@ -43,5 +49,4 @@ class Button:
                     self.pressed = False
         else:
             self.dynamic_elevation = self.elevation
-
 

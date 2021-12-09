@@ -1,4 +1,5 @@
 import pygame as pg
+import sys
 from button import Button
 from input_box import Input_Box
 from label import Label
@@ -16,7 +17,7 @@ def main():
     input_label = Label(10, 10, 120, 41, pg.Color("grey"), pg.Color("white"), "Input:", gui_font, align="right")
     input_box = Input_Box(130, 10, 260, 40, pg.Color("grey"), pg.Color("cyan"), gui_font)
 
-    output_label = Label(10, 110, 380, 40, pg.Color("grey"), pg.Color("white"), "Output", gui_font, align="center", border=2)
+    output_label = Label(10, 110, 380, 40, pg.Color("grey"), pg.Color("white"), "", gui_font, align="center", border=2)
     calculate_button = Button(10, 60, 380, 40, pg.Color("grey"), pg.Color("white"), "CALCULATE", gui_font, action=lambda:calculate(input_box, output_label))
 
     while app_running:
@@ -28,8 +29,9 @@ def main():
             if event.type == pg.KEYDOWN and input_box.input_active:
                 if event.key == pg.K_BACKSPACE:
                     input_box.delete_char()
-                elif event.key == pg.K_RETURN:
+                elif event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
                     input_box.input_active = False
+                    calculate(input_box, output_label)
                 else:
                     input_box.add_char(event.unicode)          
 
@@ -42,11 +44,21 @@ def main():
         pg.display.update()
         clock.tick(60)
     pg.quit()
-    exit()
+    sys.exit()
 
 def calculate(input_box, output_label):
-    result = eval(input_box.text_input)
+    """ Calculates and displayes the result of the entered expression. """
+    # potential security issue: eval() ex. eval(pythong code)
+    # validating input in input_box.add_char()
+    try:
+        result = eval(input_box.text)
+    except ZeroDivisionError:
+        result = "Divide by Zero Error"
+    except SyntaxError:
+        result = "Invalid Expression"
+        
     output_label.update_text(str(result))
+    input_box.clear_text()
 
 
 if __name__ == "__main__":
