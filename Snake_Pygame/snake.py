@@ -91,20 +91,14 @@ class Snake:
         """ Check if the head of the snake is colliding with Food. """
 
         head_segment = self.segments[0]
-
-        if head_segment.x == food.x and head_segment.y == food.y:
-            return True
-        return False
+        return head_segment.x == food.x and head_segment.y == food.y
 
 
     def colliding_with_walls(self, screen):
         """ Check if the head of the snake is colliding with the borders of the screen. """
 
         head_segment = self.segments[0]
-
-        if head_segment.x < 0 or head_segment.x >= screen.get_width() or head_segment.y < 0 or head_segment.y >= screen.get_height():
-            return True
-        return False
+        return head_segment.x < 0 or head_segment.x >= screen.get_width() or head_segment.y < 0 or head_segment.y >= screen.get_height()
 
 
 class Segment:

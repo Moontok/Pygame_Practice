@@ -1,4 +1,4 @@
-class Game_Manager:
+class GameManager:
     """ Manages general settings and states of the game. """
 
     def __init__(self, clock):

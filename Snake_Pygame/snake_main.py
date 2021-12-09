@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
 
-from game_manager import Game_Manager
+from game_manager import GameManager
 from snake import Snake
 from food import Food
 from directions import Direction
@@ -11,7 +11,7 @@ def main():
     pg.init()
     pg.display.set_caption("Snake")
 
-    game_manager = Game_Manager(pg.time.Clock())
+    game_manager = GameManager(pg.time.Clock())
     screen = pg.display.set_mode((game_manager.window_width, game_manager.window_height))
 
     # Music
@@ -43,7 +43,6 @@ def menu_loop(screen, game_manager):
                 game_manager.playing_game = True
         
         screen.blit(main_menu, (0, 0))
-
 
         text_to_be_displayed = [
             "Hello and welcome to the game Snake!",
@@ -93,14 +92,15 @@ def game_loop(screen, game_manager):
             pg.mixer.Sound.play(gulp_sound)
             snake.add_segment()
             food.move_food_random(screen)
+
         food.draw_food(screen)
         snake.draw_snake(screen)
-
         pg.display.update()
 
 
 def game_over_loop(screen, game_manager):
     """ Loop for the game over screen. """
+    
     game_over_menu = pg.image.load("images/game_over.png")
 
     while game_manager.game_over_screen:
