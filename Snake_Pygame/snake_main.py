@@ -3,7 +3,6 @@ import pygame as pg
 from game_manager import Game_Manager
 from snake import Snake
 from food import Food
-from color import Color
 from directions import Direction
 
 
@@ -39,7 +38,7 @@ def menu_loop(screen, game_manager):
                 game_manager.in_main_menu = False
                 game_manager.playing_game = True
         
-        screen.fill(Color.BLACK)
+        screen.fill(pg.Color("black"))
 
         text_to_be_displayed = [
             "Hello and welcome to the game Snake!",
@@ -50,7 +49,7 @@ def menu_loop(screen, game_manager):
             "",
             "Press 'ENTER' to play the game."
         ]
-        display_text(text_to_be_displayed, game_manager, screen, Color.CYAN)
+        display_text(text_to_be_displayed, game_manager, screen, pg.Color("cyan"))
 
         pg.display.update()
 
@@ -109,10 +108,10 @@ def game_over_loop(screen, game_manager):
                 game_manager.game_over_screen = False
                 game_manager.in_main_menu = True
         
-        screen.fill(Color.BLACK)
+        screen.fill(pg.Color("black"))
 
         text_to_be_displayed = ["GAME OVER!", "Press 'ENTER' to go to the main menu."]
-        display_text(text_to_be_displayed, game_manager, screen, Color.RED)
+        display_text(text_to_be_displayed, game_manager, screen, pg.Color("red"))
 
         pg.display.update()
 

@@ -113,6 +113,5 @@ class Segment:
     def __init__(self, x, y, direction):
         self.x = x
         self.y = y
-        # Up: 0, 1 Down: 0, -1 Right: 1, 0 Left: -1, 0
         self.direction = direction
 
