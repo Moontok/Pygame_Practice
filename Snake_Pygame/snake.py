@@ -1,6 +1,7 @@
 from pygame import image, transform
 from directions import Direction
 
+
 class Snake:
     """ Classes that manages the snake controlled by the player. """
 
@@ -11,7 +12,6 @@ class Snake:
         self.head = image.load("images/snake_head.png")
         self.body = image.load("images/snake_body.png")
         self.tail = image.load("images/snake_tail.png")
-
 
     def draw_snake(self, screen):
         """ Render snake to the screen. """
@@ -43,7 +43,6 @@ class Snake:
                     body = transform.rotate(self.body, 90) 
                 screen.blit(body, [segment.x, segment.y, self.segment_size, self.segment_size])
 
-
     def move_snake(self):
         """ Move each segment one size unit in its current direction and
         then update their current heading.
@@ -55,7 +54,6 @@ class Snake:
         
         self.update_segment_directions()
 
-
     def update_segment_directions(self):
         """ Update the direction of each segment, beyond the first, to the direction
         of the segment of the index before.
@@ -65,7 +63,6 @@ class Snake:
             segment_before = self.segments[segment_index - 1]
             new_direction = segment_before.direction
             self.segments[segment_index].direction = new_direction
-            
 
     def add_segment(self):
         """ Add a new segment to the end of the snake. """
@@ -76,7 +73,6 @@ class Snake:
 
         self.segments.append(Segment(x_location, y_location, last_segment.direction))
 
-
     def colliding_with_body(self):
         """ Check if the head of the snake is colliding with any segment in its body. """
 
@@ -86,13 +82,11 @@ class Snake:
                 return True
         return False
 
-
     def colliding_with_food(self, food):
         """ Check if the head of the snake is colliding with Food. """
 
         head_segment = self.segments[0]
         return head_segment.x == food.x and head_segment.y == food.y
-
 
     def colliding_with_walls(self, screen):
         """ Check if the head of the snake is colliding with the borders of the screen. """
@@ -108,4 +102,3 @@ class Segment:
         self.x = x
         self.y = y
         self.direction = direction
-

@@ -1,8 +1,10 @@
 import pygame as pg
 import sys
+
 from button import Button
 from input_box import InputBox
 from label import Label
+
 
 def main():
     pg.init()
@@ -14,11 +16,38 @@ def main():
     app_running = True
     gui_font = pg.font.SysFont("Console", 30)
 
-    input_label = Label(10, 10, 120, 41, pg.Color("grey"), pg.Color("white"), "Input:", gui_font, align="right")
-    input_box = InputBox(130, 10, 260, 40, pg.Color("grey"), pg.Color("cyan"), gui_font)
+    input_label = Label(
+        10, 10, 120, 41,
+        pg.Color("grey"),
+        pg.Color("white"),
+        "Input:",
+        gui_font,
+        align="right"
+    )
+    input_box = InputBox(
+        130, 10, 260, 40,
+        pg.Color("grey"),
+        pg.Color("cyan"),
+        gui_font
+    )
 
-    output_label = Label(10, 110, 380, 40, pg.Color("grey"), pg.Color("white"), "", gui_font, align="center", border=2)
-    calculate_button = Button(10, 60, 380, 40, pg.Color("grey"), pg.Color("white"), "CALCULATE", gui_font, action=lambda:calculate(input_box, output_label))
+    output_label = Label(
+        10, 110, 380, 40,
+        pg.Color("grey"),
+        pg.Color("white"),
+        "",
+        gui_font,
+        align="center",
+        border=2
+    )
+    calculate_button = Button(
+        10, 60, 380, 40,
+        pg.Color("grey"),
+        pg.Color("white"),
+        "CALCULATE",
+        gui_font,
+        action=lambda: calculate(input_box, output_label)
+    )
 
     while app_running:
         for event in pg.event.get():
@@ -33,7 +62,7 @@ def main():
                     input_box.input_active = False
                     calculate(input_box, output_label)
                 else:
-                    input_box.add_char(event.unicode)          
+                    input_box.add_char(event.unicode)
 
         screen.fill(pg.Color("black"))
         input_label.draw(screen)
@@ -43,8 +72,10 @@ def main():
 
         pg.display.update()
         clock.tick(60)
+        
     pg.quit()
     sys.exit()
+
 
 def calculate(input_box, output_label):
     """ Calculates and displayes the result of the entered expression. """
@@ -56,10 +87,9 @@ def calculate(input_box, output_label):
         result = "Divide by Zero Error"
     except SyntaxError:
         result = "Invalid Expression"
-        
+
     output_label.update_text(str(result))
     input_box.clear_text()
-
 
 if __name__ == "__main__":
     main()

@@ -10,7 +10,7 @@ from directions import Direction
 def main():
     pg.init()
     pg.display.set_caption("Snake")
-
+    
     game_manager = GameManager(pg.time.Clock())
     screen = pg.display.set_mode((game_manager.window_width, game_manager.window_height))
 
@@ -27,7 +27,8 @@ def main():
 
     pg.quit()
     sys.exit()
-    
+
+
 def menu_loop(screen, game_manager):
     """ Loop that is executed when game is started or after the game over screen. """
     
