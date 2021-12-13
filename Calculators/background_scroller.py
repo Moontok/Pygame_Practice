@@ -15,6 +15,7 @@ class Background:
             self.background_rect.y = 0
         else:
             self.background_rect.y += self.speed_y
+            
         screen.blit(self.background, self.background_rect)
         second_background = self.background_rect[:]
         
