@@ -53,7 +53,14 @@ class InputBox:
         Does not accept alpha characters.
         """
 
-        if not char.isalpha() and len(self.text) < self.char_limit:
+        # For Regular Calculator
+        # if not char.isalpha() and len(self.text) < self.char_limit:
+        #     self.text += char
+
+        # For Base Calculator
+
+        acceptable_chars = "box"
+        if (not char.isalpha() or char in acceptable_chars) and len(self.text) < self.char_limit:
             self.text += char
 
     def check_if_clicked(self):

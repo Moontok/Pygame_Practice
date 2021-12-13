@@ -4,6 +4,7 @@ import sys
 from button import Button
 from input_box import InputBox
 from label import Label
+from background_scroller import Background
 
 
 def main():
@@ -49,6 +50,10 @@ def main():
         action=lambda: calculate(input_box, output_label)
     )
 
+    # Images
+    bg_image = "images/background.png"
+    background = Background(bg_image, 5)
+
     while app_running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -65,6 +70,7 @@ def main():
                     input_box.add_char(event.unicode)
 
         screen.fill(pg.Color("black"))
+        background.draw(screen)
         input_label.draw(screen)
         input_box.draw(screen)
         calculate_button.draw(screen)
@@ -86,6 +92,8 @@ def calculate(input_box, output_label):
     except ZeroDivisionError:
         result = "Divide by Zero Error"
     except SyntaxError:
+        result = "Invalid Expression"
+    except NameError:  # For base calc upgrade "box" and eval no variable
         result = "Invalid Expression"
 
     output_label.update_text(str(result))
