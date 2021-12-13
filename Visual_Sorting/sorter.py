@@ -22,6 +22,42 @@ class Sorter:
             rectangle.draw(screen, x, y, self.shape_width)
             x += self.shape_width + 2
 
+
+    def selection_sort(self):
+        values = self.values
+        for i in range(len(values)):
+            best = i
+
+            self.values[i].color = pg.Color("yellow")  #############
+
+            for j in range(i + 1, len(values)):
+                
+                values[j].color = pg.Color("cyan")  #############
+
+                if values[j].height < values[best].height:
+                    if best != i:
+                        values[best].color = pg.Color("grey")  #############
+                    values[j].color = pg.Color("cyan")  #############
+                    best = j
+                values[j].color = pg.Color("grey")  #############
+                if best != i:
+                    self.values[best].color = pg.Color("red")
+                print(values)
+                yield values
+
+            self.swap(self.values, i, best) 
+        yield values
+
+    def swap(self, values, i, j):
+        """ Swap values[i] with values[j] inside of list values. """
+
+        temp = values[i]
+        values[i] = values[j]
+        values[j] = temp
+
+        values[j].color = pg.Color("grey")  #############
+
+
 class Value:
     def __init__(self, height, color):
         self.height = height

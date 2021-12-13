@@ -16,7 +16,8 @@ def main():
 
     sorter = Sorter(30, 20)
     sort_speed = 10
-    insertion_sorting = True
+    insertion_sorting = False
+    temp_sorting = True
 
     while app_running:
         for event in pg.event.get():
@@ -57,6 +58,13 @@ def main():
         
                 
             insertion_sorting = False
+        elif temp_sorting:
+            screen.fill(pg.Color("black"))
+            sorter.values = list(sorter.selection_sort())
+            sorter.draw(screen, 10, 200)
+
+            pg.display.update()
+            clock.tick(sort_speed)
         else:
             screen.fill(pg.Color("black"))
             sorter.draw(screen, 10, 200)
