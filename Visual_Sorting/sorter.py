@@ -4,12 +4,28 @@ import copy
 
 
 class Sorter:
-    def __init__(self, size, shape_width):
+    def __init__(self, size, shape_height, shape_width, sort_speed):
         self.size = size
+        self.shape_height = shape_height
         self.shape_width = shape_width
+        self.sort_speed = sort_speed
         self.values = []
+        self.values_for_bubble = []
+        self.values_for_selection = []
+        self.values_for_insertion = []
+        self.bubble_generator = None
+        self.selection_generator = None
+        self.insertion_generator = None
+        self.sorting = False
 
-        self.generate_values()
+        self.setup_values()
+
+    def setup_values(self):
+        self.values.clear()
+        for _ in range(self.size):
+            height = rm.randint(1, self.shape_height)
+            rectangle = Value(height, pg.Color("grey"))
+            self.values.append(rectangle)
         
         self.values_for_bubble = copy.deepcopy(self.values)
         self.values_for_selection = copy.deepcopy(self.values)
@@ -18,29 +34,6 @@ class Sorter:
         self.bubble_generator = self.bubble_sort()
         self.selection_generator = self.selection_sort()
         self.insertion_generator = self.insertion_sort()
-        self.sorting = True
-
-    def generate_values(self):
-        """Generate random height values."""
-
-        # Random
-        for _ in range(self.size):
-            height = rm.randint(1, 100)
-            rectangle = Value(height, pg.Color("grey"))
-            self.values.append(rectangle)
-
-        # Reverse sorted
-        # values = [x for x in range(self.size, 0, -1)]
-        # for height in values:
-        #     rectangle = Value(height, pg.Color("grey"))
-        #     self.values.append(rectangle)
-
-        # Sorted
-        # values = [x for x in range(self.size)]
-        # for height in values:
-        #     rectangle = Value(height, pg.Color("grey"))
-        #     self.values.append(rectangle)
-
     
     def draw_bubble(self, screen, x, y):
         for rectangle in self.values_for_bubble:
@@ -62,76 +55,75 @@ class Sorter:
         sorted = 0
 
         while not done:
-            yield True
+            yield True  #############
             done = True
+            self.values_for_bubble[-sorted - 1].color = pg.Color("grey")  ############# 
             for k in range(len(self.values_for_bubble) - sorted - 1):
                 yield True
+                if k > 0:  #############
+                    self.values_for_bubble[k - 1].color = pg.Color("grey")  ############# 
                 self.values_for_bubble[k].color = pg.Color("yellow")  #############
                 self.values_for_bubble[k + 1].color = pg.Color("cyan")  #############
-                yield True
+                yield True  #############
                 if self.values_for_bubble[k].height > self.values_for_bubble[k + 1].height:
-                    yield True
+                    yield True  #############
                     self.swap(self.values_for_bubble, k, k + 1)
                     done = False
                     self.values_for_bubble[k + 1].color = pg.Color("yellow")  #############
-                self.values_for_bubble[k].color = pg.Color("grey")  #############             
-                
+                    self.values_for_bubble[k].color = pg.Color("cyan")  #############
             sorted += 1
-            self.values_for_bubble[-sorted].color = pg.Color("green")  #############
+            self.values_for_bubble[-sorted].color = pg.Color("green")  ############# 
 
-        if sorted < len(self.values_for_bubble):
-            yield True
-            for i in range(len(self.values_for_bubble) - sorted):
+        if sorted < len(self.values_for_bubble):  #############
+            yield True  #############
+            for i in range(len(self.values_for_bubble) - sorted):  #############
                 self.values_for_bubble[i].color = pg.Color("green")  #############
-        yield False
+        yield False  #############
 
     def selection_sort(self):
         for i in range(len(self.values_for_selection)):
-            yield True
+            yield True  #############
             best = i
-            
+            self.values_for_selection[-1].color = pg.Color("grey")  #############
             self.values_for_selection[i].color = pg.Color("yellow")  #############
             for j in range(i + 1, len(self.values_for_selection)):
-                yield True
+                yield True  #############
+                if j - 1 > i:  #############
+                    self.values_for_selection[j - 1].color = pg.Color("grey")  #############
                 self.values_for_selection[j].color = pg.Color("cyan")  #############
-                yield True
+                yield True  #############
                 if self.values_for_selection[j].height < self.values_for_selection[best].height:
-                    if best != i:
+                    if best != i:  #############
                         self.values_for_selection[best].color = pg.Color("grey")  #############
                     self.values_for_selection[j].color = pg.Color("cyan")  #############
                     best = j
-                if best != i:
-                    self.values_for_selection[best].color = pg.Color("red")
-                self.values_for_selection[j].color = pg.Color("grey")  #############
-            yield True
+                if best != i:  #############
+                    self.values_for_selection[best].color = pg.Color("red")  #############
+            yield True  #############
             self.swap(self.values_for_selection, i, best)
             self.values_for_selection[i].color = pg.Color("green")  #############
-            # if best == i:
-            #     break
-        yield False
+        yield False  #############
 
     def insertion_sort(self):
         for j in range(1, len(self.values_for_insertion)):
-            yield True
+            yield True  #############
             k = j - 1
             self.values_for_insertion[j].color = pg.Color("yellow")  #############
             self.values_for_insertion[k].color = pg.Color("cyan")  #############
             while k >= 0 and self.values_for_insertion[k].height > self.values_for_insertion[k + 1].height:
-                yield True
+                yield True  #############
+                if k > 0:  #############      
+                    self.values_for_insertion[k - 1].color = pg.Color("green")  #############
                 self.values_for_insertion[k + 1].color = pg.Color("yellow")  #############                
                 self.values_for_insertion[k].color = pg.Color("cyan")  #############
-                yield True
+                yield True  #############
                 self.swap(self.values_for_insertion, k, k + 1)
 
-                self.values_for_insertion[k + 1].color = pg.Color("cyan")  #############                
+                self.values_for_insertion[k + 1].color = pg.Color("green")  #############                
                 self.values_for_insertion[k].color = pg.Color("yellow")  #############
-                self.values_for_insertion[k + 1].color = pg.Color("green")  #############
-                self.values_for_insertion[k].color = pg.Color("green")  #############
                 k -= 1
             self.values_for_insertion[k + 1].color = pg.Color("green")  #############
-            if k > 0:
-                self.values_for_insertion[k].color = pg.Color("green")  #############
-        yield False
+        yield False  #############
 
     def swap(self, values, i, j):
         """ Swap values[i] with values[j] inside of list values. """
@@ -139,8 +131,6 @@ class Sorter:
         temp = values[i]
         values[i] = values[j]
         values[j] = temp
-
-        values[j].color = pg.Color("grey")  #############
 
 
 class Value:

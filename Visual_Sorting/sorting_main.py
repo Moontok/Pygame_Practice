@@ -2,69 +2,159 @@ import pygame as pg
 import sys
 
 from sorter import Sorter
+from button import Button
+from label import Label
 
 
 def main():
     pg.init()
     pg.display.set_caption("Sorter")
-
-    screen = pg.display.set_mode((1600, 340))
+    number_of_values = 10
+    value_height = 100
+    value_width = 40
+    padding = 2
+    sort_speed = 10
+    screen_width = max(840, (value_width + padding) * number_of_values+padding + 240)
+    screen_height = (value_height + 10) * 3 + 40
+    screen = pg.display.set_mode((screen_width, screen_height))
     clock = pg.time.Clock()
 
     app_running = True
-    gui_font = pg.font.SysFont("Console", 30)
 
-    sorter = Sorter(70, 20)
-    sort_speed = 200
+    sorter = Sorter(number_of_values, value_height, value_width, sort_speed)
     bubble_sorting = True
     selection_sorting = True
     insertion_sorting = True
+    
+    gui_font = pg.font.SysFont("Console", 30)
+
+    start_button = Button(
+        int(screen.get_width() / 2) - 410,
+        int(screen.get_height() - 40),
+        200, 30,
+        pg.Color("grey"),
+        pg.Color("white"),
+        "Start",
+        gui_font,
+        action=lambda: start_sorts(sorter, start_button)
+    )
+
+    restart_button = Button(
+        int(screen.get_width() / 2) - 205,
+        int(screen.get_height() - 40),
+        200, 30,
+        pg.Color("grey"),
+        pg.Color("white"),
+        "Restart",
+        gui_font,
+        action=lambda: setup_new_sorts(sorter, start_button)
+    )
+
+    speed_up_button = Button(
+        int(screen.get_width() / 2) + 5, 
+        int(screen.get_height() - 40),
+        200, 30,
+        pg.Color("grey"),
+        pg.Color("white"),
+        "+Speed",
+        gui_font,
+        action=lambda: speed_up(sorter)
+    )
+
+    slow_down_button = Button(
+        int(screen.get_width() / 2) + 210, 
+        int(screen.get_height() - 40), 
+        200, 
+        30, 
+        pg.Color("grey"), 
+        pg.Color("white"), 
+        "-Speed", 
+        gui_font, 
+        action=lambda: slow_down(sorter)
+    )
+
+    bubble_label = Label(
+        10, 10, 200,
+        value_height,
+        pg.Color("grey"),
+        pg.Color("cyan"),
+        "Bubble",
+        gui_font,
+        align="center",
+        border=2
+    )
+
+    selection_label = Label(
+        10, 10 + value_height, 200,
+        value_height, pg.Color("grey"),
+        pg.Color("cyan"),"Selection",
+        gui_font,
+        align="center",
+        border=2
+    )
+
+    insertion_label = Label(
+        10, 10 + value_height * 2, 200,
+        value_height, pg.Color("grey"),
+        pg.Color("cyan"),
+        "Insertion",
+        gui_font,
+        align="center",
+        border=2
+    )
 
     while app_running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 app_running = False
-
-        if bubble_sorting or selection_sorting or insertion_sorting:
-            screen.fill(pg.Color("black"))
+        
+        screen.fill(pg.Color("black"))
+        start_button.draw(screen)
+        restart_button.draw(screen)
+        speed_up_button.draw(screen)
+        slow_down_button.draw(screen)
+        bubble_label.draw(screen)
+        selection_label.draw(screen)
+        insertion_label.draw(screen)
+        if sorter.sorting:            
             if bubble_sorting:
                 bubble_sorting = next(sorter.bubble_generator)
-                sorter.draw_bubble(screen, 10, 110)
-            else:
-                sorter.draw_bubble(screen, 10, 110)
-            if selection_sorting:
+            if selection_sorting:       
                 selection_sorting = next(sorter.selection_generator)
-                sorter.draw_selection(screen, 10, 220)
-            else:
-                sorter.draw_selection(screen, 10, 220)
-            if insertion_sorting:
+            if insertion_sorting:     
                 insertion_sorting = next(sorter.insertion_generator)
-                sorter.draw_insertion(screen, 10, 330)
-            else:
-                sorter.draw_insertion(screen, 10, 330)
-
-            pg.display.update()
-            clock.tick(sort_speed)
-        else:
-            screen.fill(pg.Color("black"))
-            sorter.draw_bubble(screen, 10, 110)
-            sorter.draw_selection(screen, 10, 220)
-            sorter.draw_insertion(screen, 10, 330)
-            pg.display.update()
-            clock.tick(60)
+        sorter.draw_bubble(screen, padding + 220, value_height + 10)
+        sorter.draw_selection(screen, padding + 220, 2 * value_height + 10)
+        sorter.draw_insertion(screen, padding + 220, 3 * value_height + 10)
         
+        pg.display.update()
+        clock.tick(sorter.sort_speed)
     pg.quit()
     sys.exit()
 
 
-def swap(values, i, j):
-    """ Swap values[i] with values[j] inside of list values. """
+def start_sorts(sorter, button):
+    sorter.sorting = not sorter.sorting
+    if sorter.sorting:
+        button.update_text("Pause")
+    else:
+        button.update_text("Start")
 
-    temp = values[i]
-    values[i] = values[j]
-    values[j] = temp
 
-    values[j].color = pg.Color("grey")  #############
+def setup_new_sorts(sorter, button):
+    sorter.sorting = False
+    sorter.setup_values()
+    button.update_text("Start")
+
+
+def speed_up(sorter):
+    if sorter.sort_speed < 300:
+        sorter.sort_speed += 10
+
+
+def slow_down(sorter):
+    if sorter.sort_speed > 10:
+        sorter.sort_speed -= 10
 
 
 if __name__ == "__main__":

@@ -19,9 +19,11 @@ class Button:
 
         self.rect = pg.Rect(position_x, position_y, width, height)
         self.color = color
+        self.text_color = text_color
         self.action = action
         self.text = font.render(text, True, text_color)
         self.text_rect = self.text.get_rect(center=self.rect.center)
+        self.font = font
 
         self.pressed = False
         self.elevation = 6
@@ -68,3 +70,7 @@ class Button:
                     self.pressed = False
         else:
             self.dynamic_elevation = self.elevation
+
+    def update_text(self, text):        
+        self.text = self.font.render(text, True, self.text_color)
+        self.text_rect = self.text.get_rect(center=self.rect.center)
