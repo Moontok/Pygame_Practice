@@ -4,6 +4,7 @@ import sys
 from sorter import Sorter
 from game_settings import GameSettings
 from gui import GUI
+from background_scroller import Background
 
 
 def main():
@@ -15,6 +16,7 @@ def main():
     screen = pg.display.set_mode((settings.screen_width, settings.screen_height), pg.RESIZABLE)
     gui = GUI(settings, screen, sorter)
     clock = pg.time.Clock()
+    bg = Background("images/space_bg.png", 1)
 
     app_running = True    
 
@@ -33,7 +35,8 @@ def main():
                 else:
                     gui.gui_elements[-1].add_char(event.unicode)
         
-        screen.fill(pg.Color("black"))
+        # screen.fill(pg.Color("black"))
+        bg.draw(screen)
 
         for gui_element in gui.gui_elements:
             gui_element.draw(screen)

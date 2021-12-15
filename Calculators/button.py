@@ -67,4 +67,8 @@ class Button:
                     self.action()
                     self.pressed = False
         else:
-            self.dynamic_elevation = self.elevation
+            self.dynamic_elevation = self.elevation       
+
+    def update_text(self, text):        
+        self.text = self.font.render(text, True, self.text_color)
+        self.text_rect = self.text.get_rect(center=self.rect.center)
