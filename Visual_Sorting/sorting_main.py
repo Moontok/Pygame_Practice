@@ -9,9 +9,9 @@ from label import Label
 def main():
     pg.init()
     pg.display.set_caption("Sorter")
-    number_of_values = 10
+    number_of_values = 70
     value_height = 100
-    value_width = 40
+    value_width = 20
     padding = 2
     sort_speed = 10
     screen_width = max(840, (value_width + padding) * number_of_values+padding + 240)
@@ -22,9 +22,6 @@ def main():
     app_running = True
 
     sorter = Sorter(number_of_values, value_height, value_width, sort_speed)
-    bubble_sorting = True
-    selection_sorting = True
-    insertion_sorting = True
     
     gui_font = pg.font.SysFont("Console", 30)
 
@@ -117,12 +114,12 @@ def main():
         selection_label.draw(screen)
         insertion_label.draw(screen)
         if sorter.sorting:            
-            if bubble_sorting:
-                bubble_sorting = next(sorter.bubble_generator)
-            if selection_sorting:       
-                selection_sorting = next(sorter.selection_generator)
-            if insertion_sorting:     
-                insertion_sorting = next(sorter.insertion_generator)
+            if sorter.bubble_sorting:
+                sorter.bubble_sorting = next(sorter.bubble_generator)
+            if sorter.selection_sorting:       
+                sorter.selection_sorting = next(sorter.selection_generator)
+            if sorter.insertion_sorting:     
+                sorter.insertion_sorting = next(sorter.insertion_generator)
         sorter.draw_bubble(screen, padding + 220, value_height + 10)
         sorter.draw_selection(screen, padding + 220, 2 * value_height + 10)
         sorter.draw_insertion(screen, padding + 220, 3 * value_height + 10)
@@ -143,6 +140,9 @@ def start_sorts(sorter, button):
 
 def setup_new_sorts(sorter, button):
     sorter.sorting = False
+    sorter.bubble_sorting = True
+    sorter.selection_sorting = True
+    sorter.insertion_sorting = True
     sorter.setup_values()
     button.update_text("Start")
 

@@ -17,6 +17,9 @@ class Sorter:
         self.selection_generator = None
         self.insertion_generator = None
         self.sorting = False
+        self.bubble_sorting = True
+        self.selection_sorting = True
+        self.insertion_sorting = True
 
         self.setup_values()
 
@@ -64,13 +67,10 @@ class Sorter:
                     self.values_for_bubble[k - 1].color = pg.Color("grey")  ############# 
                 self.values_for_bubble[k].color = pg.Color("yellow")  #############
                 self.values_for_bubble[k + 1].color = pg.Color("cyan")  #############
-                yield True  #############
                 if self.values_for_bubble[k].height > self.values_for_bubble[k + 1].height:
                     yield True  #############
                     self.swap(self.values_for_bubble, k, k + 1)
                     done = False
-                    self.values_for_bubble[k + 1].color = pg.Color("yellow")  #############
-                    self.values_for_bubble[k].color = pg.Color("cyan")  #############
             sorted += 1
             self.values_for_bubble[-sorted].color = pg.Color("green")  ############# 
 
@@ -88,38 +88,34 @@ class Sorter:
             self.values_for_selection[i].color = pg.Color("yellow")  #############
             for j in range(i + 1, len(self.values_for_selection)):
                 yield True  #############
-                if j - 1 > i:  #############
+                if j - 1 > i and j - 1 != best:  #############
                     self.values_for_selection[j - 1].color = pg.Color("grey")  #############
                 self.values_for_selection[j].color = pg.Color("cyan")  #############
-                yield True  #############
                 if self.values_for_selection[j].height < self.values_for_selection[best].height:
                     if best != i:  #############
                         self.values_for_selection[best].color = pg.Color("grey")  #############
-                    self.values_for_selection[j].color = pg.Color("cyan")  #############
                     best = j
-                if best != i:  #############
-                    self.values_for_selection[best].color = pg.Color("red")  #############
+                    if best != i:  #############
+                        self.values_for_selection[best].color = pg.Color("red")  #############
             yield True  #############
             self.swap(self.values_for_selection, i, best)
             self.values_for_selection[i].color = pg.Color("green")  #############
+            if best != i:
+                self.values_for_selection[best].color = pg.Color("grey")  #############
         yield False  #############
 
-    def insertion_sort(self):
+    def insertion_sort(self):        
+        self.values_for_insertion[0].color = pg.Color("green")
         for j in range(1, len(self.values_for_insertion)):
             yield True  #############
             k = j - 1
             self.values_for_insertion[j].color = pg.Color("yellow")  #############
-            self.values_for_insertion[k].color = pg.Color("cyan")  #############
             while k >= 0 and self.values_for_insertion[k].height > self.values_for_insertion[k + 1].height:
                 yield True  #############
-                if k > 0:  #############      
-                    self.values_for_insertion[k - 1].color = pg.Color("green")  #############
-                self.values_for_insertion[k + 1].color = pg.Color("yellow")  #############                
                 self.values_for_insertion[k].color = pg.Color("cyan")  #############
                 yield True  #############
                 self.swap(self.values_for_insertion, k, k + 1)
-
-                self.values_for_insertion[k + 1].color = pg.Color("green")  #############                
+                self.values_for_insertion[k + 1].color = pg.Color("green")  #############
                 self.values_for_insertion[k].color = pg.Color("yellow")  #############
                 k -= 1
             self.values_for_insertion[k + 1].color = pg.Color("green")  #############
