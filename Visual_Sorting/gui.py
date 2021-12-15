@@ -153,17 +153,16 @@ class GUI:
         self.gui_elements[0].update_text("Start")
 
     def speed_up(self):
-        if self.sorter.sort_speed < 300:
-            self.sorter.sort_speed += 10
+        if self.settings.sort_speed < 300:
+            self.settings.sort_speed += 10
 
     def slow_down(self):
-        if self.sorter.sort_speed > 10:
-            self.sorter.sort_speed -= 10
+        if self.settings.sort_speed > 10:
+            self.settings.sort_speed -= 10
 
     def update_number_of_values(self):
         self.settings.number_of_values = int(self.gui_elements[-1].text)
         self.sorter.sorting = False
-        self.sorter.size = self.settings.number_of_values
         self.settings.update_screen_size()
         self.sorter.setup_values()
-        pg.display.set_mode((self.settings.screen_width, self.settings.screen_height), pg.RESIZABLE)
+        pg.display.set_mode((self.settings.screen_width, self.settings.screen_height))

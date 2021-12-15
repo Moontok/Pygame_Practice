@@ -12,13 +12,13 @@ def main():
     pg.display.set_caption("Visual Sorter")
 
     settings = GameSettings()
-    sorter = Sorter(settings.number_of_values, settings.value_height, settings.value_width, settings.sort_speed)
-    screen = pg.display.set_mode((settings.screen_width, settings.screen_height), pg.RESIZABLE)
+    sorter = Sorter(settings)
+    screen = pg.display.set_mode((settings.screen_width, settings.screen_height))
     gui = GUI(settings, screen, sorter)
     clock = pg.time.Clock()
-    bg = Background("images/space_bg.png", 1)
+    bg = Background("images/space_bg.png", 1, settings)
 
-    app_running = True    
+    app_running = True
 
     while app_running:
         for event in pg.event.get():
@@ -65,7 +65,7 @@ def main():
         )
         
         pg.display.update()
-        clock.tick(sorter.sort_speed)
+        clock.tick(settings.sort_speed)
     pg.quit()
     sys.exit()
 

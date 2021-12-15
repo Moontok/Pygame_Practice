@@ -3,10 +3,10 @@ import pygame as pg
 
 class GameSettings:
     def __init__(self):        
-        self.number_of_values = 70
-        self.value_height = 100
-        self.value_width = 20
-        self.value_horizontal_padding = 2
+        self.number_of_values = 300
+        self.value_height = 400
+        self.value_width = 5
+        self.value_horizontal_padding = 1
         self.value_vertical_padding = 10
         self.window_padding = 10
         self.sort_speed = 10

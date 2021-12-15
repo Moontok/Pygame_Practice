@@ -4,11 +4,8 @@ import copy
 
 
 class Sorter:
-    def __init__(self, size, shape_height, shape_width, sort_speed):
-        self.size = size
-        self.shape_height = shape_height
-        self.shape_width = shape_width
-        self.sort_speed = sort_speed
+    def __init__(self, settings):
+        self.settings = settings
         self.values = []
         self.values_for_bubble = []
         self.values_for_selection = []
@@ -25,8 +22,8 @@ class Sorter:
 
     def setup_values(self):
         self.values.clear()
-        for _ in range(self.size):
-            height = rm.randint(1, self.shape_height)
+        for _ in range(self.settings.number_of_values):
+            height = rm.randint(1, self.settings.value_height)
             rectangle = Value(height, pg.Color("grey"))
             self.values.append(rectangle)
         
@@ -40,18 +37,18 @@ class Sorter:
     
     def draw_bubble(self, screen, x, y):
         for rectangle in self.values_for_bubble:
-            rectangle.draw(screen, x, y, self.shape_width)
-            x += self.shape_width + 2
+            rectangle.draw(screen, x, y, self.settings.value_width)
+            x += self.settings.value_width + self.settings.value_horizontal_padding
     
     def draw_selection(self, screen, x, y):
         for rectangle in self.values_for_selection:
-            rectangle.draw(screen, x, y, self.shape_width)
-            x += self.shape_width + 2
+            rectangle.draw(screen, x, y, self.settings.value_width)
+            x += self.settings.value_width + self.settings.value_horizontal_padding
 
     def draw_insertion(self, screen, x, y):
         for rectangle in self.values_for_insertion:
-            rectangle.draw(screen, x, y, self.shape_width)
-            x += self.shape_width + 2   
+            rectangle.draw(screen, x, y, self.settings.value_width)
+            x += self.settings.value_width + self.settings.value_horizontal_padding   
 
     def bubble_sort(self):
         done = False
