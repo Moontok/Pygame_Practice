@@ -1,5 +1,6 @@
 import pygame as pg
 import math
+import random
 
 
 class Background:
@@ -16,7 +17,7 @@ class Background:
 
     def draw(self, screen):
         """ Draw the background to the screen. """
-
+        
         for tile in self.bg_tiles:
             if self.dir_x > 0 and tile[0] > self.settings.screen_width:
                 tile[0] = -self.tile_rect.width

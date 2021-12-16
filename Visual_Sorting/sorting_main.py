@@ -17,7 +17,7 @@ def main():
     clock = pg.time.Clock()
     # bg = Background("images/space_bg.png", -1, -1, settings)
     # bg = Background("images/background.png", 1, 1, settings)
-    # bg = Background("images/test_bg.png", -1, -1, settings)
+    # bg = Background("images/test_bg.png", 1, -1, settings)
 
     gui = GUI(settings, screen, sorter)
 
@@ -36,27 +36,16 @@ def main():
         for gui_element in gui.gui_elements:
             gui_element.draw(screen)
 
-        if sorter.sorting:            
-            if sorter.bubble_sorting:
-                sorter.bubble_sorting = next(sorter.bubble_generator)
-            if sorter.selection_sorting:       
-                sorter.selection_sorting = next(sorter.selection_generator)
-            if sorter.insertion_sorting:     
-                sorter.insertion_sorting = next(sorter.insertion_generator)
-        sorter.draw_bubble(
+        if sorter.sorting:
+            for sort in sorter.sorts:
+                if sort.sorting:
+                    sort.sorting = next(sort.generator)
+        for i, sort in enumerate(sorter.sorts):
+            sort.draw(
             screen,
             settings.value_horizontal_padding + settings.label_width + settings.window_padding * 2,
-            settings.value_height + settings.value_vertical_padding + settings.window_padding
-        )
-        sorter.draw_selection(
-            screen,
-            settings.value_horizontal_padding + settings.label_width + settings.window_padding * 2,
-            2 * (settings.value_height + settings.value_vertical_padding) + settings.window_padding
-        )
-        sorter.draw_insertion(
-            screen,
-            settings.value_horizontal_padding + settings.label_width + settings.window_padding * 2,
-            3 * (settings.value_height + settings.value_vertical_padding) + settings.window_padding
+            (i + 1) * settings.value_height + settings.value_vertical_padding + settings.window_padding,
+            settings.value_horizontal_padding
         )
         
         pg.display.update()

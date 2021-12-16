@@ -158,17 +158,15 @@ class GUI:
         """
 
         self.sorter.sorting = False
-        self.sorter.bubble_sorting = True
-        self.sorter.selection_sorting = True
-        self.sorter.insertion_sorting = True
-        self.sorter.setup_values()
+        for sort in self.sorter.sorts:
+            sort.sorting = True
+        self.sorter.setup_sorts()
         self.gui_elements[0].update_text("Start")
 
     def speed_up(self):
         """Speeds up the frame rate of the sort animation."""
 
-        if self.settings.sort_speed < 300:
-            self.settings.sort_speed += 10
+        self.settings.sort_speed += 10
 
     def slow_down(self):
         """Slows down the frame rate of the sort animation."""
@@ -186,7 +184,7 @@ class GUI:
         self.settings.number_of_values = int(self.gui_elements[-1].text)
         self.sorter.sorting = False
         self.settings.update_screen_size()
-        self.sorter.setup_values()
+        self.sorter.setup_sorts()
         if self.bg != None:
             self.bg.generate_background_tiles()
         pg.display.set_mode((self.settings.screen_width, self.settings.screen_height))
