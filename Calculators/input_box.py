@@ -53,24 +53,30 @@ class InputBox:
         Does not accept alpha characters.
         """
 
-        # For Regular Calculator
-        # if not char.isalpha() and len(self.text) < self.char_limit:
-        #     self.text += char
-
-        # For Base Calculator
         acceptable_chars = "box"
         if (not char.isalpha() or char in acceptable_chars) and len(self.text) < self.char_limit:
             self.text += char
 
-    def check_if_clicked(self):
-        """ Check if user clicked into the input box. """
+    def process_event(self, event):
+        """Process event to determine if the box should respond."""
+        
+        # Check for mouse events and respond accordingly.
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):            
+                self.input_active = True
+                self.color = self.active_color
+                self.font_color = self.active_color
+            else:
+                self.input_active = False
+                self.color = self.inactive_color
+                self.font_color = self.inactive_color
 
-        mouse_pos = pg.mouse.get_pos()
-        if self.rect.collidepoint(mouse_pos):            
-            self.input_active = True
-            self.color = self.active_color
-            self.font_color = self.active_color
-        else:
-            self.input_active = False
-            self.color = self.inactive_color
-            self.font_color = self.inactive_color
+        # Check for keydown events and respond accordingly.
+        if event.type == pg.KEYDOWN and self.input_active:
+            if event.key == pg.K_BACKSPACE:
+                self.delete_char()
+            elif event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
+                self.input_active = False
+                self.update_number_of_values()
+            else:
+                self.add_char(event.unicode)

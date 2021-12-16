@@ -27,16 +27,7 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 app_running = False
-            if event.type == pg.MOUSEBUTTONDOWN:
-                gui.gui_elements[-1].check_if_clicked()
-            if event.type == pg.KEYDOWN and gui.gui_elements[-1].input_active:
-                if event.key == pg.K_BACKSPACE:
-                    gui.gui_elements[-1].delete_char()
-                elif event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
-                    gui.gui_elements[-1].input_active = False
-                    gui.update_number_of_values()
-                else:
-                    gui.gui_elements[-1].add_char(event.unicode)
+            gui.gui_elements[8].process_event(event)
         
         # screen.fill(pg.Color("black"))
         bg.draw(screen)
