@@ -5,9 +5,10 @@ import math
 class Background:
     """Class that creates a seamless background scrolling effect."""
 
-    def __init__(self, image, speed_y, settings):        
+    def __init__(self, image, dir_x, dir_y, settings):        
         self.settings = settings
-        self.speed_y = speed_y
+        self.dir_x = dir_x
+        self.dir_y = dir_y
         self.background = pg.image.load(image)
         self.tile_rect = self.background.get_rect()
         self.bg_tiles = []
@@ -17,10 +18,20 @@ class Background:
         """ Draw the background to the screen. """
 
         for tile in self.bg_tiles:
-            if tile[1] > self.settings.screen_height:
-                tile[1] = -self.tile_rect.height
+            if self.dir_x > 0 and tile[0] > self.settings.screen_width:
+                tile[0] = -self.tile_rect.width
+            elif self.dir_x < 0 and tile[0] < -self.tile_rect.width:
+                tile[0] = self.settings.screen_width
             else:
-                tile[1] += self.speed_y  
+                tile[0] += self.dir_x
+
+            if self.dir_y > 0 and tile[1] > self.settings.screen_height:
+                tile[1] = -self.tile_rect.height
+            elif self.dir_y < 0 and tile[1] < -self.tile_rect.height:
+                tile[1] = self.settings.screen_height
+            else:
+                tile[1] += self.dir_y
+
             screen.blit(self.background, tile)
 
     def generate_background_tiles(self):
