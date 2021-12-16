@@ -13,7 +13,8 @@ class InputBox:
         color,
         font_color,
         font,
-        char_limit=14
+        char_limit=14,
+        action=None
     ):
         self.rect = pg.Rect(position_x, position_y, width, height)
         self.color = color
@@ -26,6 +27,7 @@ class InputBox:
         self.text_rect = pg.Rect(position_x, position_y, width, height)
         self.input_active = False
         self.char_limit = char_limit
+        self.action = action
     
     def draw(self, screen):
         """ Draw the input box. """
@@ -77,6 +79,7 @@ class InputBox:
                 self.delete_char()
             elif event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
                 self.input_active = False
-                self.update_number_of_values()
+                if self.action != None:
+                    self.action()
             else:
                 self.add_char(event.unicode)

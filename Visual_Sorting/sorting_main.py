@@ -15,11 +15,11 @@ def main():
     sorter = Sorter(settings)
     screen = pg.display.set_mode((settings.screen_width, settings.screen_height))
     clock = pg.time.Clock()
-    bg = Background("images/space_bg.png", -1, -1, settings)
-    # bg = Background("images/background.png", -1, -1, settings)
+    # bg = Background("images/space_bg.png", -1, -1, settings)
+    # bg = Background("images/background.png", 1, 1, settings)
     # bg = Background("images/test_bg.png", -1, -1, settings)
 
-    gui = GUI(settings, screen, sorter, bg)
+    gui = GUI(settings, screen, sorter)
 
     app_running = True
 
@@ -29,8 +29,9 @@ def main():
                 app_running = False
             gui.gui_elements[8].process_event(event)
         
-        # screen.fill(pg.Color("black"))
-        bg.draw(screen)
+        screen.fill(pg.Color("black"))
+        # bg.draw(screen)
+        print(clock.get_fps())
 
         for gui_element in gui.gui_elements:
             gui_element.draw(screen)

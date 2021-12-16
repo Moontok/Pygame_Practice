@@ -8,7 +8,7 @@ from input_box import InputBox
 class GUI:
     """Class for managing the GUI."""
 
-    def __init__(self, settings, screen, sorter, bg):
+    def __init__(self, settings, screen, sorter, bg=None):
         self.settings = settings
         self.screen = screen
         self.sorter = sorter
@@ -131,12 +131,13 @@ class GUI:
         change_value_input_box = InputBox(
             self.settings.window_padding * 6 + self.settings.button_width * 4 + 150, 
             self.settings.screen_height - 50,
-            50,
+            70,
             40,
             pg.Color("grey"),
             pg.Color("cyan"),
             self.gui_font,
-            char_limit=2
+            char_limit=3,
+            action=self.update_number_of_values
         )
         change_value_input_box.text = str(self.settings.number_of_values)
         self.gui_elements.append(change_value_input_box)
@@ -186,5 +187,6 @@ class GUI:
         self.sorter.sorting = False
         self.settings.update_screen_size()
         self.sorter.setup_values()
-        self.bg.generate_background_tiles()
+        if self.bg != None:
+            self.bg.generate_background_tiles()
         pg.display.set_mode((self.settings.screen_width, self.settings.screen_height))

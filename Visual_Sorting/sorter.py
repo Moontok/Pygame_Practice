@@ -48,7 +48,12 @@ class Sorter:
     def draw_insertion(self, screen, x, y):
         for rectangle in self.values_for_insertion:
             rectangle.draw(screen, x, y, self.settings.value_width)
-            x += self.settings.value_width + self.settings.value_horizontal_padding   
+            x += self.settings.value_width + self.settings.value_horizontal_padding
+
+    def draw_quick(self, screen, x, y):
+        for rectangle in self.values_for_quicksort:
+            rectangle.draw(screen, x, y, self.settings.value_width)
+            x += self.settings.value_width + self.settings.value_horizontal_padding 
 
     def bubble_sort(self):
         done = False
