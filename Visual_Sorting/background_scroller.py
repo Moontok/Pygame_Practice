@@ -4,20 +4,14 @@ import math
 
 class Background:
     """Class that creates a seamless background scrolling effect."""
+
     def __init__(self, image, speed_y, settings):        
         self.settings = settings
+        self.speed_y = speed_y
         self.background = pg.image.load(image)
         self.tile_rect = self.background.get_rect()
-        self.bg_tiles = [self.tile_rect[:]]
-        self.bg_tiles[0][1] = -self.tile_rect.height
-        
-        self.number_of_tiles = math.ceil(self.settings.screen_height / self.bg_tiles[0][3]) + 1
-        for i in range(self.number_of_tiles):
-            tile = self.bg_tiles[i][:]
-            tile[1] = self.bg_tiles[i][1] + self.bg_tiles[i][3]
-            self.bg_tiles.append(tile)
-
-        self.speed_y = speed_y
+        self.bg_tiles = []
+        self.generate_background_tiles()
 
     def draw(self, screen):
         """ Draw the background to the screen. """
@@ -26,5 +20,19 @@ class Background:
             if tile[1] > self.settings.screen_height:
                 tile[1] = -self.tile_rect.height
             else:
-                tile[1] += self.speed_y            
+                tile[1] += self.speed_y  
             screen.blit(self.background, tile)
+
+    def generate_background_tiles(self):
+        """Generate background tiles to cover entire screen area."""
+
+        self.bg_tiles.clear()
+        self.number_of_tiles_y = math.ceil(self.settings.screen_height / self.tile_rect.height) + 1
+        self.number_of_tiles_x = math.ceil(self.settings.screen_width / self.tile_rect.width) + 1
+
+        for row_i in range(self.number_of_tiles_y):
+            for column_i in range(self.number_of_tiles_x):
+                tile = self.tile_rect[:]
+                tile[0] = column_i * tile[2]
+                tile[1] = row_i * tile[3]
+                self.bg_tiles.append(tile)

@@ -14,9 +14,12 @@ def main():
     settings = GameSettings()
     sorter = Sorter(settings)
     screen = pg.display.set_mode((settings.screen_width, settings.screen_height))
-    gui = GUI(settings, screen, sorter)
     clock = pg.time.Clock()
     bg = Background("images/space_bg.png", 1, settings)
+    # bg = Background("images/background.png", 1, settings)
+    # bg = Background("images/test_bg.png", 1, settings)
+
+    gui = GUI(settings, screen, sorter, bg)
 
     app_running = True
 

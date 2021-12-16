@@ -6,16 +6,21 @@ from input_box import InputBox
 
 
 class GUI:
-    def __init__(self, settings, screen, sorter):
+    """Class for managing the GUI."""
+
+    def __init__(self, settings, screen, sorter, bg):
         self.settings = settings
         self.screen = screen
         self.sorter = sorter
+        self.bg = bg
         self.gui_elements = []
         self.gui_font = pg.font.SysFont("Console", 30)
         self.generate_gui()
 
 
     def generate_gui(self):
+        """Area to add gui elements."""
+
         start_button = Button(
             self.settings.window_padding,
             int(self.settings.screen_height - 40),
@@ -138,6 +143,8 @@ class GUI:
 
 
     def start_sorts(self):
+        """Button action for controlling the sorting state."""
+
         self.sorter.sorting = not self.sorter.sorting
         if self.sorter.sorting:
             self.gui_elements[0].update_text("Pause")
@@ -145,6 +152,10 @@ class GUI:
             self.gui_elements[0].update_text("Start")
 
     def setup_new_sorts(self):
+        """Button action for resetting the sorting simulation.
+        Generates new values to sort.
+        """
+
         self.sorter.sorting = False
         self.sorter.bubble_sorting = True
         self.sorter.selection_sorting = True
@@ -153,16 +164,27 @@ class GUI:
         self.gui_elements[0].update_text("Start")
 
     def speed_up(self):
+        """Speeds up the frame rate of the sort animation."""
+
         if self.settings.sort_speed < 300:
             self.settings.sort_speed += 10
 
     def slow_down(self):
+        """Slows down the frame rate of the sort animation."""
+
         if self.settings.sort_speed > 10:
             self.settings.sort_speed -= 10
 
     def update_number_of_values(self):
+        """Changes the number of values to sorts.
+        Stops the simulation and creates a new set of values
+        that are reflective of the desired amount entered.
+        The screen will resize accordingly.
+        """
+
         self.settings.number_of_values = int(self.gui_elements[-1].text)
         self.sorter.sorting = False
         self.settings.update_screen_size()
         self.sorter.setup_values()
+        self.bg.generate_background_tiles()
         pg.display.set_mode((self.settings.screen_width, self.settings.screen_height))
