@@ -2,14 +2,16 @@ import socket
 import sys
 
 
-class Client:
+class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "192.168.1.114"
+        self.server = "192.168.1.239"
         self.port = 5555
         self.address = (self.server, self.port)
-        self.id = self.connect()
-        print(self.id)
+        self.pos = self.connect()
+
+    def get_pos(self):
+        return self.pos
 
     def connect(self):
         try:
@@ -26,8 +28,3 @@ class Client:
             return self.client.recv(2048).decode()
         except socket.error as e:
             print(e)
-
-if __name__ == "__main__":
-    client = Client()
-    print(client.send("hello"))
-    print(client.send("working"))

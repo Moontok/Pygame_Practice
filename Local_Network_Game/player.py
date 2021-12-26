@@ -1,5 +1,7 @@
 import pygame as pg
-from pygame.constants import K_RIGHT
+
+from network import Network
+
 
 class Player:
     def __init__(self, x, y, width, height, color):
@@ -26,4 +28,7 @@ class Player:
         if keys[pg.K_DOWN]:
             self.y += self.velocity
 
+        self.update()
+
+    def update(self):
         self.rect = (self.x, self.y, self.width, self.height)
