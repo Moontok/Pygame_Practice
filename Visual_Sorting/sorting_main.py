@@ -31,7 +31,7 @@ def main():
         
         screen.fill(pg.Color("black"))
         # bg.draw(screen)
-        print(clock.get_fps())
+        # print(clock.get_fps())
 
         for gui_element in gui.gui_elements:
             gui_element.draw(screen)
