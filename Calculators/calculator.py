@@ -4,14 +4,16 @@ import sys
 from button import Button
 from input_box import InputBox
 from label import Label
-from background_scroller import Background
 
 
 def main():
     pg.init()
-    pg.display.set_caption("Calculator")
+    pg.display.set_caption("Base Calculator")
 
-    screen = pg.display.set_mode((400, 160))
+    screen_width = 400
+    screen_height = 160
+
+    screen = pg.display.set_mode((screen_width, screen_height))
     clock = pg.time.Clock()
 
     app_running = True
@@ -29,7 +31,8 @@ def main():
         130, 10, 260, 40,
         pg.Color("grey"),
         pg.Color("cyan"),
-        gui_font
+        gui_font,
+        acceptable_chars="box"
     )
 
     output_label = Label(
@@ -51,26 +54,16 @@ def main():
     )
 
     # Images
-    bg_image = "images/background.png"
-    background = Background(bg_image, 5)
+    bg_image = pg.image.load("images/background.png")
 
     while app_running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 app_running = False
-            if event.type == pg.MOUSEBUTTONDOWN:
-                input_box.check_if_clicked()
-            if event.type == pg.KEYDOWN and input_box.input_active:
-                if event.key == pg.K_BACKSPACE:
-                    input_box.delete_char()
-                elif event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
-                    input_box.input_active = False
-                    calculate(input_box, output_label)
-                else:
-                    input_box.add_char(event.unicode)
+            input_box.process_event(event)
 
         screen.fill(pg.Color("black"))
-        background.draw(screen)
+        screen.blit(bg_image, (0, 0))
         input_label.draw(screen)
         input_box.draw(screen)
         calculate_button.draw(screen)

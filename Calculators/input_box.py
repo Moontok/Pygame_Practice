@@ -13,7 +13,9 @@ class InputBox:
         color,
         font_color,
         font,
-        char_limit=14
+        char_limit=14,
+        action=None,
+        acceptable_chars = ""
     ):
         self.rect = pg.Rect(position_x, position_y, width, height)
         self.color = color
@@ -26,6 +28,8 @@ class InputBox:
         self.text_rect = pg.Rect(position_x, position_y, width, height)
         self.input_active = False
         self.char_limit = char_limit
+        self.action = action
+        self.acceptable_chars = acceptable_chars
     
     def draw(self, screen):
         """ Draw the input box. """
@@ -53,8 +57,7 @@ class InputBox:
         Does not accept alpha characters.
         """
 
-        acceptable_chars = "box"
-        if (not char.isalpha() or char in acceptable_chars) and len(self.text) < self.char_limit:
+        if (not char.isalpha() or char in self.acceptable_chars) and len(self.text) < self.char_limit:
             self.text += char
 
     def process_event(self, event):
@@ -76,7 +79,8 @@ class InputBox:
             if event.key == pg.K_BACKSPACE:
                 self.delete_char()
             elif event.key == pg.K_RETURN or event.key == pg.K_KP_ENTER:
-                self.input_active = False
-                self.update_number_of_values()
+                # self.input_active = False
+                if self.action != None:
+                    self.action()
             else:
                 self.add_char(event.unicode)

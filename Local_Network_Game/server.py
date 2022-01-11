@@ -3,7 +3,7 @@ import _thread
 import sys
 
 def main():    
-    server = "192.168.1.239"
+    server = "10.56.64.165"
     port = 5555
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
