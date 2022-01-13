@@ -23,7 +23,7 @@ class GUI:
 
         start_button = Button(
             self.settings.window_padding,
-            int(self.settings.screen_height - 40),
+            self.settings.screen_height - self.settings.window_padding - self.settings.button_height,
             self.settings.button_width,
             self.settings.button_height,
             pg.Color("grey"),
@@ -36,7 +36,7 @@ class GUI:
 
         restart_button = Button(
             self.settings.window_padding * 2 + self.settings.button_width,
-            int(self.settings.screen_height - 40),
+            self.settings.screen_height - self.settings.window_padding - self.settings.button_height,
             self.settings.button_width,
             self.settings.button_height,
             pg.Color("grey"),
@@ -49,7 +49,7 @@ class GUI:
 
         speed_up_button = Button(
             self.settings.window_padding * 3 + self.settings.button_width * 2, 
-            int(self.settings.screen_height - 40),
+            self.settings.screen_height - self.settings.window_padding - self.settings.button_height,
             self.settings.button_width,
             self.settings.button_height,
             pg.Color("grey"),
@@ -62,7 +62,7 @@ class GUI:
 
         slow_down_button = Button(
             self.settings.window_padding * 4 + self.settings.button_width * 3, 
-            int(self.settings.screen_height - 40),
+            self.settings.screen_height - self.settings.window_padding - self.settings.button_height,
             self.settings.button_width,
             self.settings.button_height,
             pg.Color("grey"), 
@@ -76,8 +76,8 @@ class GUI:
         bubble_label = Label(
             self.settings.window_padding,
             self.settings.window_padding,
-            self.settings.label_width,
-            self.settings.label_height,
+            self.settings.button_width,
+            self.settings.value_height + self.settings.value_vertical_padding,
             pg.Color("grey"),
             pg.Color("cyan"),
             "Bubble",
@@ -89,9 +89,9 @@ class GUI:
 
         selection_label = Label(
             self.settings.window_padding,
-            self.settings.window_padding + self.settings.label_height,
-            self.settings.label_width,
-            self.settings.label_height,
+            self.settings.window_padding + self.settings.value_height + self.settings.value_vertical_padding,
+            self.settings.button_width,
+            self.settings.value_height + self.settings.value_vertical_padding,
             pg.Color("grey"),
             pg.Color("cyan"),
             "Selection",
@@ -103,9 +103,9 @@ class GUI:
 
         insertion_label = Label(
             self.settings.window_padding,
-            self.settings.window_padding + self.settings.label_height* 2,
-            self.settings.label_width,
-            self.settings.label_height,
+            self.settings.window_padding + (self.settings.value_height + self.settings.value_vertical_padding ) * 2,
+            self.settings.button_width,
+            self.settings.value_height + self.settings.value_vertical_padding,
             pg.Color("grey"),
             pg.Color("cyan"),
             "Insertion",
@@ -117,9 +117,9 @@ class GUI:
 
         change_value_label = Label(
             self.settings.window_padding * 5 + self.settings.button_width * 4, 
-            self.settings.screen_height - 50,
-            150,
-            40,
+            self.settings.screen_height - self.settings.window_padding - self.settings.button_height,
+            self.settings.button_width,
+            self.settings.button_height,
             pg.Color("black"),
             pg.Color("grey"),
             "Values:",
@@ -129,10 +129,10 @@ class GUI:
         self.gui_elements.append(change_value_label)
 
         change_value_input_box = InputBox(
-            self.settings.window_padding * 6 + self.settings.button_width * 4 + 150, 
-            self.settings.screen_height - 50,
-            70,
-            40,
+            self.settings.window_padding * 5 + self.settings.button_width * 5, 
+            self.settings.screen_height - self.settings.window_padding - self.settings.button_height,
+            self.settings.button_width,
+            self.settings.button_height,
             pg.Color("grey"),
             pg.Color("cyan"),
             self.gui_font,

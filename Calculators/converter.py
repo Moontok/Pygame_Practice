@@ -9,7 +9,7 @@ def main():
     pg.init()
     pg.display.set_caption("Base Converter")
 
-    screen_width = 440
+    screen_width = 450
     screen_height = 210
 
     screen = pg.display.set_mode((screen_width, screen_height))
@@ -20,7 +20,7 @@ def main():
     input_boxes = {}
 
     input_label_2 = Label(
-        10, 10, 160, 41,
+        10, 10, 140, 41,
         pg.Color("grey"),
         pg.Color("white"),
         "Base 2:",
@@ -28,7 +28,7 @@ def main():
         align="right"
     )
     input_box_2 = InputBox(
-        170, 10, 260, 40,
+        150, 10, 290, 40,
         pg.Color("grey"),
         pg.Color("cyan"),
         gui_font,
@@ -37,7 +37,7 @@ def main():
     input_boxes["binary"] = input_box_2
 
     input_label_8 = Label(
-        10, 60, 160, 41,
+        10, 60, 140, 41,
         pg.Color("grey"),
         pg.Color("white"),
         "Base 8:",
@@ -45,7 +45,7 @@ def main():
         align="right"
     )
     input_box_8 = InputBox(
-        170, 60, 260, 40,
+        150, 60, 290, 40,
         pg.Color("grey"),
         pg.Color("cyan"),
         gui_font,
@@ -54,7 +54,7 @@ def main():
     input_boxes["octal"] = input_box_8
 
     input_label_10 = Label(
-        10, 110, 160, 41,
+        10, 110, 140, 41,
         pg.Color("grey"),
         pg.Color("white"),
         "Base 10:",
@@ -62,7 +62,7 @@ def main():
         align="right"
     )
     input_box_10 = InputBox(
-        170, 110, 260, 40,
+        150, 110, 290, 40,
         pg.Color("grey"),
         pg.Color("cyan"),
         gui_font,
@@ -71,7 +71,7 @@ def main():
     input_boxes["decimal"] = input_box_10
 
     input_label_16 = Label(
-        10, 160, 160, 41,
+        10, 160, 140, 41,
         pg.Color("grey"),
         pg.Color("white"),
         "Base 16:",
@@ -79,7 +79,7 @@ def main():
         align="right"
     )
     input_box_16 = InputBox(
-        170, 160, 260, 40,
+        150, 160, 290, 40,
         pg.Color("grey"),
         pg.Color("cyan"),
         gui_font,

@@ -37,7 +37,7 @@ class InputBox:
         self.rendered_text = self.font.render(self.text, True, self.font_color)
         screen.blit(
             self.rendered_text,
-            (self.text_rect.x + 5, self.text_rect.y + 5)
+            (self.text_rect.x + 5, self.text_rect.y)
         )
 
     def delete_char(self):

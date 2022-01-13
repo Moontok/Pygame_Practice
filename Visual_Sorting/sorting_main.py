@@ -31,7 +31,6 @@ def main():
         
         screen.fill(pg.Color("black"))
         bg.draw(screen)
-        # print(clock.get_fps())
 
         for gui_element in gui.gui_elements:
             gui_element.draw(screen)
@@ -40,13 +39,15 @@ def main():
             for sort in sorter.sorts:
                 if sort.sorting:
                     sort.sorting = next(sort.generator)
-        for i, sort in enumerate(sorter.sorts):
+        sort_row = 1
+        for sort in sorter.sorts:
             sort.draw(
-            screen,
-            settings.value_horizontal_padding + settings.label_width + settings.window_padding * 2,
-            (i + 1) * settings.value_height + settings.value_vertical_padding + settings.window_padding,
-            settings.value_horizontal_padding
-        )
+                screen,
+                settings.window_padding * 2 + settings.button_width,
+                settings.window_padding + (settings.value_vertical_padding + settings.value_height) * sort_row,
+                settings.value_horizontal_padding
+            )
+            sort_row += 1
         
         pg.display.update()
         clock.tick(settings.sort_speed)
