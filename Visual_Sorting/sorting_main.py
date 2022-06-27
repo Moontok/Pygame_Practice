@@ -1,3 +1,4 @@
+# My cool program
 import pygame as pg
 import sys
 
