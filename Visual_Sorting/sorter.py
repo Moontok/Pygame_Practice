@@ -18,9 +18,9 @@ class Sorter:
             values.append(rectangle)
         
         self.sorts.clear()
-        self.sorts.append(Bubble_Sort(copy.deepcopy(values)))
-        self.sorts.append(Selection_Sort(copy.deepcopy(values)))
-        self.sorts.append(Insertion_Sort(copy.deepcopy(values)))
+        self.sorts.append(Bubble_Sort(values))
+        self.sorts.append(Selection_Sort(values))
+        self.sorts.append(Insertion_Sort(values))
 
 class Sort:
     def __init__(self, values):
