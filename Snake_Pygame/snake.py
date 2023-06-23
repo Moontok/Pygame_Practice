@@ -1,51 +1,66 @@
-from pygame import image, transform
+import pygame as pg
+
 from directions import Direction
+from segment import Segment
 
 
 class Snake:
-    """ Classes that manages the snake controlled by the player. """
+    """
+    Classes that manages the snake controlled by the player.
+    """
 
-    def __init__(self, x, y, segment_size):
+    def __init__(self, pos, segment_size):
         self.segment_size = segment_size
-        self.segments = [Segment(x, y, (0, 1))]
+        self.head = Segment(pos, (0, 1))
+        self.segments = [self.head]
 
-        self.head = image.load("images/snake_head.png")
-        self.body = image.load("images/snake_body.png")
-        self.tail = image.load("images/snake_tail.png")
+
+        self.head_img = pg.image.load("images/snake_head.png")
+        self.body_img = pg.image.load("images/snake_body.png")
+        self.tail_img = pg.image.load("images/snake_tail.png")
+
+        # Scale images to segment size
+        self.head_img = pg.transform.scale(self.head_img, (segment_size, segment_size))
+        self.body_img = pg.transform.scale(self.body_img, (segment_size, segment_size))
+        self.tail_img = pg.transform.scale(self.tail_img, (segment_size, segment_size))
 
     def draw_snake(self, screen):
-        """ Render snake to the screen. """
+        """
+        Render snake to the screen.
+        """
+
         for index, segment in enumerate(self.segments):
             if index == 0:
                 if segment.direction == Direction.UP:
-                    head = self.head
+                    head = self.head_img
                 elif segment.direction == Direction.DOWN:
-                    head = transform.rotate(self.head, 180)
+                    head = pg.transform.rotate(self.head_img, 180)
                 elif segment.direction == Direction.RIGHT:
-                    head = transform.rotate(self.head, 270)
+                    head = pg.transform.rotate(self.head_img, 270)
                 else:
-                    head = transform.rotate(self.head, 90)                
+                    head = pg.transform.rotate(self.head_img, 90)                
                 screen.blit(head, [segment.x, segment.y, self.segment_size, self.segment_size])
             elif index == len(self.segments) - 1:
                 if segment.direction == Direction.UP:
-                    tail = self.tail
+                    tail = self.tail_img
                 elif segment.direction == Direction.DOWN:
-                    tail = transform.rotate(self.tail, 180)
+                    tail = pg.transform.rotate(self.tail_img, 180)
                 elif segment.direction == Direction.RIGHT:
-                    tail = transform.rotate(self.tail, 270)
+                    tail = pg.transform.rotate(self.tail_img, 270)
                 else:
-                    tail = transform.rotate(self.tail, 90)                
+                    tail = pg.transform.rotate(self.tail_img, 90)                
                 screen.blit(tail, [segment.x, segment.y, self.segment_size, self.segment_size])
             else:
                 if segment.direction == Direction.UP or segment.direction == Direction.DOWN:
-                    body = self.body
+                    body = self.body_img
                 else:
-                    body = transform.rotate(self.body, 90) 
+                    body = pg.transform.rotate(self.body_img, 90) 
                 screen.blit(body, [segment.x, segment.y, self.segment_size, self.segment_size])
 
     def move_snake(self):
-        """ Move each segment one size unit in its current direction and
-        then update their current heading.
+        """
+        Move each segment one size unit in its current direction and
+        then update their current direction.
         """
 
         for segment in self.segments:
@@ -55,8 +70,10 @@ class Snake:
         self.update_segment_directions()
 
     def update_segment_directions(self):
-        """ Update the direction of each segment, beyond the first, to the direction
+        """
+        Update the direction of each segment, beyond the first, to the direction
         of the segment of the index before.
+        Starts from the back of the snake.
         """
 
         for segment_index in range(len(self.segments) - 1, 0, -1):
@@ -65,40 +82,42 @@ class Snake:
             self.segments[segment_index].direction = new_direction
 
     def add_segment(self):
-        """ Add a new segment to the end of the snake. """
+        """
+        Add a new segment to the end of the snake.
+        """
 
         last_segment = self.segments[-1]
         x_location = last_segment.x + self.segment_size * -last_segment.direction[0]
         y_location = last_segment.y + self.segment_size * -last_segment.direction[1]
+        pos = (x_location, y_location)
+        new_segment = Segment(pos, last_segment.direction)
 
-        self.segments.append(Segment(x_location, y_location, last_segment.direction))
+        self.segments.append(new_segment)
 
     def colliding_with_body(self):
-        """ Check if the head of the snake is colliding with any segment in its body. """
+        """
+        Check if the head of the snake is colliding with any segment in its body.
+        """
 
-        head_segment = self.segments[0]
+        head = self.segments[0]
         for index, body_segment in enumerate(self.segments):
-            if index > 2 and head_segment.x == body_segment.x and head_segment.y == body_segment.y:
+            if index > 2 and head.get_pos() == body_segment.get_pos():
                 return True
         return False
 
     def colliding_with_food(self, food):
-        """ Check if the head of the snake is colliding with Food. """
+        """
+        Check if the head of the snake is colliding with Food.
+        """
 
-        head_segment = self.segments[0]
-        return head_segment.x == food.x and head_segment.y == food.y
+        head = self.segments[0]
+        return head.get_pos() == food.get_pos()
 
     def colliding_with_walls(self, screen):
-        """ Check if the head of the snake is colliding with the borders of the screen. """
+        """
+        Check if the head of the snake is colliding with the borders of the screen.
+        """
 
-        head_segment = self.segments[0]
-        return head_segment.x < 0 or head_segment.x >= screen.get_width() or head_segment.y < 0 or head_segment.y >= screen.get_height()
+        head = self.segments[0]
+        return head.x < 0 or head.x >= screen.get_width() or head.y < 0 or head.y >= screen.get_height()
 
-
-class Segment:
-    """ A class to represent a segment of the snake. """
-
-    def __init__(self, x, y, direction):
-        self.x = x
-        self.y = y
-        self.direction = direction
