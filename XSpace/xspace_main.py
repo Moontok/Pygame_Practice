@@ -14,33 +14,7 @@ def main():
 
     game_running = True
 
-    level_map = [
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXX',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X               XXXX      X',
-        'X      P                  X',
-        'X     XXXXXX              X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'X                         X',
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    ]
+    level_map = load_level('level_map.txt')
 
     tile_size = 30
     tiles = []
@@ -67,6 +41,15 @@ def main():
     pg.quit()
     sys.exit()
     
+
+def load_level(level_map):
+    """Load the level from a file. The file should be a text
+    file with each line representing a row in the level. The
+    level should be represented by characters.
+    """
+    
+    with open(level_map, "r") as file:
+        return [line.strip() for line in file]
 
 
 if __name__ == "__main__":
