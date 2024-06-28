@@ -7,19 +7,19 @@ X                         X
 X                         X
 X                         X
 X                         X
-X               XXXX      X
+X               LGGR      X
 X      P                  X
-X     XXXXXX              X
+X     LGGGGR              X
 X                         X
 X                         X
 X                         X
 X                         X
-X        XXX              X
+X        lgggggggggggr    X
+X        dDDDDDDDDDDDb    X
+X   LGGGGuuuuuuuuuuuuB    X
 X                         X
 X                         X
 X                         X
 X                         X
 X                         X
-X                         X
-X                         X
-XXXXXXXXXXXXXXXXXXXXXXXXXXX
+GGGGGGGGGGGGGGGGGGGGGGGGGGG

@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 
 from game_settings import Settings
+from tilemap import Tilemap
 
 
 def main():
@@ -15,17 +16,8 @@ def main():
     game_running = True
 
     level_map = load_level('level_map.txt')
-
-    tile_size = 30
-    tiles = []
-
-    for row_index, row in enumerate(level_map):
-        for col_index, cell in enumerate(row):
-            x = col_index * tile_size
-            y = row_index * tile_size
-
-            if cell == "X":
-                tiles.append([x, y, tile_size, tile_size])
+    tilemap = Tilemap(settings.tile_size)
+    tilemap.generate_map(level_map)
 
     while game_running:
         for event in pg.event.get():
@@ -33,9 +25,8 @@ def main():
                 game_running = False
 
         screen.fill(pg.Color("black"))
+        tilemap.draw(screen)
 
-        for tile in tiles:            
-                pg.draw.rect(screen, pg.Color("white"), tile)
         pg.display.update()
 
     pg.quit()
@@ -43,10 +34,7 @@ def main():
     
 
 def load_level(level_map):
-    """Load the level from a file. The file should be a text
-    file with each line representing a row in the level. The
-    level should be represented by characters.
-    """
+    """Load the level from a text file."""
     
     with open(level_map, "r") as file:
         return [line.strip() for line in file]
