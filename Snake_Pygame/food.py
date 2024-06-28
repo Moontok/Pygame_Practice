@@ -23,8 +23,8 @@ class Food:
         finding_new_location = True
 
         while finding_new_location:
-            self.x = randrange(0, int(screen.get_width()) - self.size, self.size)
-            self.y = randrange(0, int(screen.get_height()) - self.size, self.size)
+            self.x = randrange(0, int(screen.get_width() - self.size), self.size)
+            self.y = randrange(0, int(screen.get_height() - self.size), self.size)
 
             finding_new_location = False
 

@@ -7,7 +7,7 @@ class GameManager:
         self.window_width = 800
         self.window_height = self.window_width
         self.game_speed = 10 
-        self.segment_size = self.window_width / 20      
+        self.segment_size = self.window_width // 20      
 
         self.game_running = True
         self.in_main_menu = True
@@ -28,7 +28,7 @@ class GameManager:
         Get the center of the screen.
         """
 
-        return (self.window_width / 2, self.window_height / 2)
+        return (self.window_width // 2, self.window_height // 2)
     
     def get_dimensions(self):
         """
