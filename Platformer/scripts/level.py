@@ -3,6 +3,7 @@ import pygame
 import scripts.sprites as sprites
 import scripts.settings as settings
 import scripts.player as player
+import scripts.groups as groups
 
 
 class Level:
@@ -10,7 +11,7 @@ class Level:
         self.display_surface = pygame.display.get_surface()
 
         # Groups
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = groups.AllSprites()
         self.collision_sprites = pygame.sprite.Group()
         self.semi_collision_sprites = pygame.sprite.Group()
 
@@ -18,13 +19,21 @@ class Level:
 
     def setup(self, tmx_map):
         # tiles
-        for x, y, surf in tmx_map.get_layer_by_name('Terrain').tiles():
-            sprites.Sprite((x * settings.TILE_SIZE, y * settings.TILE_SIZE), surf, (self.all_sprites, self.collision_sprites))
+        for layer in ['BG', 'Terrain', 'FG', 'Platforms']:
+            for x, y, surf in tmx_map.get_layer_by_name(layer).tiles():
+                groups = [self.all_sprites]
+                if layer == 'Terrain': groups.append(self.collision_sprites)
+                if layer == 'Platforms': groups.append(self.semi_collision_sprites)
+                match layer:
+                    case 'BG': z = settings.Z_LAYERS['bg tiles']
+                    case 'FG': z = settings.Z_LAYERS['fg']
+                    case _: z = settings.Z_LAYERS['main']
+                sprites.Sprite((x * settings.TILE_SIZE, y * settings.TILE_SIZE), surf, groups, z)
 
         # objects
         for obj in tmx_map.get_layer_by_name('Objects'):
             if obj.name == 'player':
-                player.Player(
+                self.player = player.Player(
                     (obj.x, obj.y),
                     self.all_sprites,
                     self.collision_sprites,
@@ -55,4 +64,4 @@ class Level:
     def run(self, dt):
         self.display_surface.fill('black')
         self.all_sprites.update(dt)
-        self.all_sprites.draw(self.display_surface)
+        self.all_sprites.draw(self.player.hitbox_rect.center)
