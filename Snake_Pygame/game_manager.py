@@ -1,39 +1,39 @@
+import pygame as pg
+
+from snake_enums import State
+
+
 class GameManager:
-    """
-    Manages general settings and states of the game.
-    """
+    """Manages the game and state."""
 
-    def __init__(self, clock):
-        self.window_width = 800
-        self.window_height = self.window_width
-        self.game_speed = 10 
-        self.segment_size = self.window_width // 20      
+    def __init__(self):
+        self.width: int = 800
+        self.height: int = self.width
+        self.speed: int = 10
+        self.size: int = self.width // 20
+        self.screen: pg.Surface = pg.display.set_mode((self.width, self.height))
+        self.clock: pg.time.Clock = pg.time.Clock()
 
-        self.game_running = True
-        self.in_main_menu = True
-        self.playing_game = False
-        self.game_over_screen = False
+        self.state: int = State.menu
 
-        self.clock = clock
+        self.large_font: pg.font.Font = pg.font.Font(None, 72)
+        self.small_font: pg.font.Font = pg.font.Font(None, 36)
 
-    def tick(self):
-        """
-        Tick the clock.
-        """
+        self.text: dict = {
+            "title": ">-<8==SNAKE==>",
+            "start": "Press ENTER to start.",
+            "name": "by Zack Spink",
+            "over": "GAME OVER!",
+            "restart": "Press ENTER to play again.",
+        }
 
-        self.clock.tick(self.game_speed)
 
-    def center(self):
-        """
-        Get the center of the screen.
-        """
+    def center(self) -> tuple:
+        """Returns the center of the screen."""
 
-        return (self.window_width // 2, self.window_height // 2)
+        return (self.width // 2, self.height // 2)
     
-    def get_dimensions(self):
-        """
-        Get the dimensions of the screen.
-        """
+    def tick(self) -> None:
+        """Controls the frame rate of the game."""
 
-        return (self.window_width, self.window_height)
-
+        self.clock.tick(self.speed)

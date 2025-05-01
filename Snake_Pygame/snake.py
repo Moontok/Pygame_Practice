@@ -1,123 +1,118 @@
 import pygame as pg
 
-from directions import Direction
-from segment import Segment
+from food import Food
+from game_manager import GameManager
+from snake_enums import Color, Direction, ImageFile
+from square import Square
 
 
 class Snake:
-    """
-    Classes that manages the snake controlled by the player.
-    """
+    """Class to manage the snake."""
 
-    def __init__(self, pos, segment_size):
-        self.segment_size = segment_size
-        self.head = Segment(pos, (0, 1))
-        self.segments = [self.head]
+    def __init__(self, gm: GameManager) -> None:
+        self.gm: GameManager = gm
+        self.head: Segment = Segment(self.gm, gm.center(), Direction.up)
+        self.segments: list = [self.head]
 
+        self.head_img = pg.image.load(ImageFile.head)
+        self.body_img = pg.image.load(ImageFile.body)
+        self.tail_img = pg.image.load(ImageFile.tail)
 
-        self.head_img = pg.image.load("images/snake_head.png")
-        self.body_img = pg.image.load("images/snake_body.png")
-        self.tail_img = pg.image.load("images/snake_tail.png")
+        self.head_img = pg.transform.scale(self.head_img, (gm.size, gm.size))
+        self.body_img = pg.transform.scale(self.body_img, (gm.size, gm.size))
+        self.tail_img = pg.transform.scale(self.tail_img, (gm.size, gm.size))
 
-        # Scale images to segment size
-        self.head_img = pg.transform.scale(self.head_img, (segment_size, segment_size))
-        self.body_img = pg.transform.scale(self.body_img, (segment_size, segment_size))
-        self.tail_img = pg.transform.scale(self.tail_img, (segment_size, segment_size))
-
-    def draw_snake(self, screen):
-        """
-        Render snake to the screen.
-        """
+    def draw(self) -> None:
+        """Render the snake to the screen."""
 
         for index, segment in enumerate(self.segments):
+            degree: int = self.get_rotation(segment.direction)
             if index == 0:
-                if segment.direction == Direction.UP:
-                    head = self.head_img
-                elif segment.direction == Direction.DOWN:
-                    head = pg.transform.rotate(self.head_img, 180)
-                elif segment.direction == Direction.RIGHT:
-                    head = pg.transform.rotate(self.head_img, 270)
-                else:
-                    head = pg.transform.rotate(self.head_img, 90)                
-                screen.blit(head, [segment.x, segment.y, self.segment_size, self.segment_size])
+                body_part: pg.Surface = pg.transform.rotate(self.head_img, degree)
             elif index == len(self.segments) - 1:
-                if segment.direction == Direction.UP:
-                    tail = self.tail_img
-                elif segment.direction == Direction.DOWN:
-                    tail = pg.transform.rotate(self.tail_img, 180)
-                elif segment.direction == Direction.RIGHT:
-                    tail = pg.transform.rotate(self.tail_img, 270)
-                else:
-                    tail = pg.transform.rotate(self.tail_img, 90)                
-                screen.blit(tail, [segment.x, segment.y, self.segment_size, self.segment_size])
+                body_part: pg.Surface = pg.transform.rotate(self.tail_img, degree)
             else:
-                if segment.direction == Direction.UP or segment.direction == Direction.DOWN:
-                    body = self.body_img
+                if segment.direction in (Direction.up, Direction.down):
+                    body_part: pg.Surface = self.body_img
                 else:
-                    body = pg.transform.rotate(self.body_img, 90) 
-                screen.blit(body, [segment.x, segment.y, self.segment_size, self.segment_size])
+                    body_part: pg.Surface = pg.transform.rotate(self.body_img, 90)
+        
+            self.gm.screen.blit(body_part, (segment.x, segment.y))
 
-    def move_snake(self):
-        """
-        Move each segment one size unit in its current direction and
-        then update their current direction.
-        """
+    def move(self) -> None:
+        """Move all segments forward thier direction."""
 
         for segment in self.segments:
-            segment.x += self.segment_size * segment.direction[0]
-            segment.y += self.segment_size * segment.direction[1]
-        
-        self.update_segment_directions()
+            segment.x += segment.size * segment.direction[0]
+            segment.y += segment.size * segment.direction[1]
 
-    def update_segment_directions(self):
-        """
-        Update the direction of each segment, beyond the first, to the direction
-        of the segment of the index before.
-        Starts from the back of the snake.
-        """
+        self.update_directions()
 
-        for segment_index in range(len(self.segments) - 1, 0, -1):
-            segment_before = self.segments[segment_index - 1]
-            new_direction = segment_before.direction
-            self.segments[segment_index].direction = new_direction
+    def update_directions(self) -> None:
+        """Update direction of each segment starting with the back."""
 
-    def add_segment(self):
-        """
-        Add a new segment to the end of the snake.
-        """
+        for index in range(len(self.segments)-1, 0, -1):
+            before: Segment = self.segments[index - 1]
+            self.segments[index].direction = before.direction
 
-        last_segment = self.segments[-1]
-        x_location = last_segment.x + self.segment_size * -last_segment.direction[0]
-        y_location = last_segment.y + self.segment_size * -last_segment.direction[1]
-        pos = (x_location, y_location)
-        new_segment = Segment(pos, last_segment.direction)
+    def grow(self) -> None:
+        """Add a new segment to the back of the snake."""
 
-        self.segments.append(new_segment)
+        end: Segment = self.segments[-1]
+        x_loc: int = (end.x + self.gm.size * -end.direction[0])
+        y_loc: int = (end.y + self.gm.size * -end.direction[1])
+        segment: Segment = Segment(self.gm, (x_loc, y_loc), end.direction)
 
-    def colliding_with_body(self):
-        """
-        Check if the head of the snake is colliding with any segment in its body.
-        """
+        self.segments.append(segment)
 
-        head = self.segments[0]
-        for index, body_segment in enumerate(self.segments):
-            if index > 2 and head.get_pos() == body_segment.get_pos():
+    def wall_hit(self) -> bool:
+        """Check if the snake head is colliding with a wall."""
+
+        x_hit: bool = self.head.x < 0 or self.head.x >= self.gm.width        
+        y_hit: bool = self.head.y < 0 or self.head.y >= self.gm.height        
+
+        return x_hit or y_hit
+
+    def overlap(self, point: tuple) -> bool:
+        """Check if point is overlapping with the snake."""
+
+        for index, segment in enumerate(self.segments):
+            if index > 2 and point == segment.get_pos():
                 return True
         return False
+    
+    def body_hit(self) -> bool:
+        """Check if snake is colliding with itself."""
+        
+        return self.overlap(self.head.get_pos())
+    
+    def food_hit(self, food: Food) -> bool:
+        """Check if head overlaps food."""
 
-    def colliding_with_food(self, food):
-        """
-        Check if the head of the snake is colliding with Food.
-        """
+        return self.head.get_pos() == food.get_pos()
+    
+    def get_rotation(self, direction: tuple) -> None:
+        """Orient the body part of the snake."""
 
-        head = self.segments[0]
-        return head.get_pos() == food.get_pos()
+        if direction == Direction.up:
+            return 0
+        elif direction == Direction.down:
+            return 180
+        elif direction == Direction.left:
+            return 90
+        elif direction == Direction.right:
+            return 270
 
-    def colliding_with_walls(self, screen):
-        """
-        Check if the head of the snake is colliding with the borders of the screen.
-        """
 
-        head = self.segments[0]
-        return head.x < 0 or head.x >= screen.get_width() or head.y < 0 or head.y >= screen.get_height()
+class Segment(Square):
+    """A class to represent a segment of the snake."""
 
+    def __init__(
+        self,
+        gm: GameManager,
+        pos: tuple,
+        direction: Direction,
+    ) -> None:
+        
+        super().__init__(gm, pos, Color.snake)
+        self.direction: Direction = direction
