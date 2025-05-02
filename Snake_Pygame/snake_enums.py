@@ -11,7 +11,7 @@ class Color:
     bg: tuple = (0, 0, 0)
     food: tuple = (255, 0, 0)
     snake: tuple = (0, 255, 255)
-    text: tuple = (255, 255, 255)
+    text: tuple = (237, 182, 43)
 
 
 class Direction:
@@ -21,6 +21,13 @@ class Direction:
     down: tuple = (0, 1)
     right: tuple = (1, 0)
     left: tuple = (-1, 0)
+
+
+class FontFiles:
+    """Font class to hold all font files."""
+
+    large: str = "fonts/Kenney_Future.ttf"
+    small: str = "fonts/Kenney_Future.ttf"
 
 
 class ImageFile:

@@ -1,6 +1,6 @@
 import pygame as pg
 
-from snake_enums import State
+from snake_enums import FontFiles, State
 
 
 class GameManager:
@@ -9,27 +9,23 @@ class GameManager:
     def __init__(self):
         self.width: int = 800
         self.height: int = self.width
-        self.speed: int = 5
+        self.speed: int = 10
         self.size: int = self.width // 20
         self.screen: pg.Surface = pg.display.set_mode((self.width, self.height))
         self.clock: pg.time.Clock = pg.time.Clock()
 
         self.state: int = State.menu
 
-        self.large_font: pg.font.Font = pg.font.Font(None, 72)
-        self.small_font: pg.font.Font = pg.font.Font(None, 36)
+        self.large_font: pg.font.Font = pg.font.Font(FontFiles.large, 72)
+        self.small_font: pg.font.Font = pg.font.Font(FontFiles.small, 24)
 
         self.text: dict = {
             "menu": [
-                "Hello and welcome to the game Snake!",
-                "Move the snake with the ARROW keys.",
-                "Collect food without collided with the",
-                "snakes body or the edges of the screen.",
-                "Press 'ENTER' to play the game."
+                "Press 'ENTER' to",
+                "play the game.",
             ],
             "game_over": [
-                "",
-                "GAME OVER! Thanks for playing!",
+                "Thanks for playing!",
                 "Press 'ENTER' to go to the main menu.",
             ],
         }

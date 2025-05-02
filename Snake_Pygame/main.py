@@ -5,7 +5,7 @@ import pygame as pg
 from food import Food
 from game_manager import GameManager
 from snake import Snake
-from snake_enums import AudioFile, Color, Direction, ImageFile, State
+from snake_enums import AudioFile, Color, Direction, FontFiles, ImageFile, State
 
 
 def main():
@@ -37,7 +37,9 @@ def menu_loop(gm: GameManager) -> None:
         background = pg.transform.scale(background, (gm.width, gm.height))
 
         gm.screen.blit(background, (0, 0))
-        display_text(gm.text["menu"], gm, Color.text, (gm.width * .1, gm.height * .78))
+        display_text(
+            gm.text["menu"], gm.small_font, gm, Color.text, (gm.width * .63, gm.height * .89)
+        )
         pg.display.flip()
 
 
@@ -77,10 +79,7 @@ def game_over_loop(gm: GameManager) -> None:
 
         gm.screen.blit(background, (0, 0))
         display_text(
-            gm.text["game_over"],
-            gm,
-            Color.text,
-            (gm.width * .1, gm.height * .78),
+            gm.text["game_over"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .85)
         )
         pg.display.flip()
 
@@ -121,15 +120,14 @@ def process_events(gm: GameManager, snake: Snake=None) -> None:
                 snake.head.direction = Direction.left
 
 
-def display_text(lines_of_text: list, gm: GameManager, color: str, pos: tuple) -> None:
+def display_text(lines_of_text: list, font: pg.font.Font, gm: GameManager, color: str, pos: tuple) -> None:
     """Displays a list text to the screen."""
     
     font_size = 24
     line_height = font_size + 1
 
-    button_font = pg.font.SysFont("Console", font_size)
     for line_number, line_text in enumerate(lines_of_text):
-        text = button_font.render(line_text, True, color)
+        text = font.render(line_text, True, color)
         gm.screen.blit(
             text,
             (pos[0], pos[1] + line_number * line_height, gm.width - 10, gm.height - 10)

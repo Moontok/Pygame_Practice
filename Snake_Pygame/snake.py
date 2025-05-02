@@ -48,15 +48,17 @@ class Snake:
         """Add a new segment to the back of the snake."""
 
         end: Segment = self.segments[-1]
-        x_loc: int = (end.x + self.gm.size * -end.direction[0])
-        y_loc: int = (end.y + self.gm.size * -end.direction[1])
+        new_end_x: int = (end.x + self.gm.size * -end.direction[0])
+        new_end_y: int = (end.y + self.gm.size * -end.direction[1])
         segment: Segment = Segment(
             self.gm,
-            (x_loc, y_loc),
+            (end.x, end.y),
             end.direction,
         )
+        end.x = new_end_x
+        end.y = new_end_y
 
-        self.segments.append(segment)
+        self.segments.insert(-1, segment)
 
     def wall_hit(self) -> bool:
         """Check if the snake head is colliding with a wall."""
