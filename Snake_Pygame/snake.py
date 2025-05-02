@@ -76,6 +76,7 @@ class Snake:
     def overlap(self, point: tuple) -> bool:
         """Check if point is overlapping with the snake."""
 
+        # Need to fix the error if food spawns on head or first 2 segments.
         for index, segment in enumerate(self.segments):
             if index > 2 and point == segment.get_pos():
                 return True
