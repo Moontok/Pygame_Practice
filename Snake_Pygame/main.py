@@ -36,20 +36,8 @@ def menu_loop(gm: GameManager) -> None:
         background = pg.image.load(ImageFile.menu_bg)
         background = pg.transform.scale(background, (gm.width, gm.height))
 
-
-        main_text: pg.Surface = gm.large_font.render(gm.text["title"], True, Color.text)
-        instructions_text: pg.Surface = gm.small_font.render(gm.text["start"], True, Color.text)
-        name_text: pg.Surface = gm.small_font.render(gm.text["name"], True, Color.text)
-
-        center: tuple = gm.center()
-        main: pg.Rect = main_text.get_rect(center=center)
-        instructions: pg.Rect = instructions_text.get_rect(center=(center[0], center[1] + 50))
-        name: pg.Rect = name_text.get_rect(center=(center[0], center[1] + 80))
-
         gm.screen.blit(background, (0, 0))
-        gm.screen.blit(main_text, main)
-        gm.screen.blit(instructions_text, instructions)
-        gm.screen.blit(name_text, name)
+        display_text(gm.text["menu"], gm, Color.text, (gm.width * .1, gm.height * .78))
         pg.display.flip()
 
 
@@ -58,7 +46,6 @@ def game_loop(gm: GameManager) -> None:
 
 
     snake: Snake = Snake(gm)
-    snake.grow()
     food: Food = Food(gm, (0, 0))
     food.move()
 
@@ -88,16 +75,13 @@ def game_over_loop(gm: GameManager) -> None:
         background = pg.image.load(ImageFile.game_over_bg)
         background = pg.transform.scale(background, (gm.width, gm.height))
 
-        main_text: pg.Surface = gm.large_font.render(gm.text["over"], True, Color.text)
-        instructions_text: pg.Surface = gm.small_font.render(gm.text["restart"], True, Color.text)
-
-        center: tuple = gm.center()
-        main: pg.Rect = main_text.get_rect(center=center)
-        instructions: pg.Rect = instructions_text.get_rect(center=(center[0], center[1] + 50))
-
         gm.screen.blit(background, (0, 0))
-        gm.screen.blit(main_text, main)
-        gm.screen.blit(instructions_text, instructions)
+        display_text(
+            gm.text["game_over"],
+            gm,
+            Color.text,
+            (gm.width * .1, gm.height * .78),
+        )
         pg.display.flip()
 
 
@@ -111,7 +95,7 @@ def process_collisions(gm: GameManager, snake: Snake, food: Food) -> None:
         snake.grow()
         food.move()
 
-        while snake.overlap(food.get_pos()):
+        while snake.body_hit(food.get_pos()):
             food.move()
 
 
@@ -136,6 +120,20 @@ def process_events(gm: GameManager, snake: Snake=None) -> None:
             elif event.key == pg.K_LEFT and snake.head.direction != Direction.right:
                 snake.head.direction = Direction.left
 
+
+def display_text(lines_of_text: list, gm: GameManager, color: str, pos: tuple) -> None:
+    """Displays a list text to the screen."""
+    
+    font_size = 24
+    line_height = font_size + 1
+
+    button_font = pg.font.SysFont("Console", font_size)
+    for line_number, line_text in enumerate(lines_of_text):
+        text = button_font.render(line_text, True, color)
+        gm.screen.blit(
+            text,
+            (pos[0], pos[1] + line_number * line_height, gm.width - 10, gm.height - 10)
+        )
 
 if __name__ == "__main__":
     main()

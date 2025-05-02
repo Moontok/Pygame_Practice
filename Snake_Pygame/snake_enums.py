@@ -11,7 +11,7 @@ class Color:
     bg: tuple = (0, 0, 0)
     food: tuple = (255, 0, 0)
     snake: tuple = (0, 255, 255)
-    text: tuple = (0, 255, 255)
+    text: tuple = (255, 255, 255)
 
 
 class Direction:
