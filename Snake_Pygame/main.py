@@ -91,13 +91,13 @@ def game_over_loop(gm: GameManager) -> None:
 
         gm.screen.blit(background, (0, 0))
         display_text(
-            gm.text["game_over"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .85)
+            gm.text["game_over"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .91)
         )
         display_text(
-            [f"Score: {gm.score}"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .05)
+            [f"Score: {gm.score}"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .04)
         )
         display_text(
-            [f"High Score: {gm.high_score}"], gm.small_font, gm, Color.text, (gm.width * .60, gm.height * .05)
+            [f"High Score: {gm.high_score}"], gm.small_font, gm, Color.text, (gm.width * .60, gm.height * .04)
         )
         pg.display.flip()
 
