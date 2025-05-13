@@ -85,7 +85,6 @@ def game_over_loop(gm: GameManager) -> None:
 
         gm.screen.blit(background, (0, 0))
         
-
         game_over_text(gm)
         score_text(gm)
         pg.display.flip()
