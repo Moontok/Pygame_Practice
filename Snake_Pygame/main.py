@@ -171,7 +171,7 @@ def game_over_text(gm: GameManager) -> None:
 
     gm.screen.blit(
         gm.small_font.render("Press Enter to play again.", True, Color.text),
-        (gm.width * .1, gm.height * .91, gm.width, gm.height),
+        (gm.width * .1, gm.height * .93, gm.width, gm.height),
     )
 
 
