@@ -1,5 +1,3 @@
-import pygame as pg
-
 from food import Food
 from game_manager import GameManager
 from snake_enums import Color, Direction, ImageFile
