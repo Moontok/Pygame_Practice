@@ -20,7 +20,7 @@ def main():
     pg.mixer.music.set_volume(0.1)
     pg.mixer.music.play(-1)
 
-    while not gm.state == State.end_game:
+    while gm.state != State.end_game:
         menu_loop(gm)
         game_loop(gm)
         game_over_loop(gm)
