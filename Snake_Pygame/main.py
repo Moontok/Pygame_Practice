@@ -31,6 +31,7 @@ def main():
 
 def menu_loop(gm: GameManager) -> None:
     """The main menu loop."""
+
     gm.high_score = load_highscore()
 
     while gm.state == State.menu:
@@ -46,8 +47,8 @@ def menu_loop(gm: GameManager) -> None:
 
 def game_loop(gm: GameManager) -> None:
     """The game loop."""
-    gm.score = 0
 
+    gm.score = 0
     snake: Snake = Snake(gm)
     food: Food = Food(gm, (0, 0))
     food.move()
@@ -73,6 +74,7 @@ def game_loop(gm: GameManager) -> None:
 
 def game_over_loop(gm: GameManager) -> None:
     """The game over loop."""
+
     if gm.score > gm.high_score:
         gm.high_score = gm.score
         save_highscore(gm.score)
