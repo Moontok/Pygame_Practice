@@ -1,7 +1,5 @@
 from random import randrange
 
-import pygame as pg
-
 from game_manager import GameManager
 from snake_enums import Color, Direction, ImageFile
 from square import Square
