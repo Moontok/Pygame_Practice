@@ -37,9 +37,9 @@ def menu_loop(gm: GameManager) -> None:
     while gm.state == State.menu:
         process_events(gm)
 
-        background = pg.image.load(ImageFile.menu_bg)
-        background = pg.transform.scale(background, (gm.width, gm.height))
+        background = load_background(gm)
 
+        # Update the screen
         gm.screen.blit(background, (0, 0))
         menu_text(gm)
         pg.display.flip()
@@ -57,13 +57,13 @@ def game_loop(gm: GameManager) -> None:
         gm.tick()
         process_events(gm, snake)
 
-        background = pg.image.load(ImageFile.game_bg)
-        background = pg.transform.scale(background, (gm.width, gm.height))
+        background = load_background(gm)
 
         snake.move()
 
         process_collisions(gm, snake, food)
 
+        # Update the screen
         gm.screen.blit(background, (0, 0))
         food.draw()
         snake.draw()
@@ -82,14 +82,29 @@ def game_over_loop(gm: GameManager) -> None:
     while gm.state == State.game_over:
         process_events(gm)
 
-        background = pg.image.load(ImageFile.game_over_bg)
-        background = pg.transform.scale(background, (gm.width, gm.height))
+        background: pg.Surface = load_background(gm)
 
+        # Update the screen
         gm.screen.blit(background, (0, 0))
         
         game_over_text(gm)
         score_text(gm)
         pg.display.flip()
+
+
+def load_background(gm: GameManager) -> pg.Surface:
+    """Load the background image."""
+
+    if gm.state == State.menu:
+        file: str = ImageFile.menu_bg
+    elif gm.state == State.in_game:
+        file: str = ImageFile.game_bg
+    elif gm.state == State.game_over:
+        file: str = ImageFile.game_over_bg
+
+    background = pg.image.load(file)
+    background = pg.transform.scale(background, (gm.width, gm.height))
+    return background
 
 
 def process_collisions(gm: GameManager, snake: Snake, food: Food) -> None:
