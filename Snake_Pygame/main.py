@@ -40,9 +40,7 @@ def menu_loop(gm: GameManager) -> None:
         background = pg.transform.scale(background, (gm.width, gm.height))
 
         gm.screen.blit(background, (0, 0))
-        display_text(
-            gm.text["menu"], gm.small_font, gm, Color.text, (gm.width * .63, gm.height * .89)
-        )
+        menu_text(gm)
         pg.display.flip()
 
 
@@ -68,12 +66,8 @@ def game_loop(gm: GameManager) -> None:
         gm.screen.blit(background, (0, 0))
         food.draw()
         snake.draw()
-        display_text(
-            [f"Score: {gm.score}"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .05)
-        )
-        display_text(
-            [f"High Score: {gm.high_score}"], gm.small_font, gm, Color.text, (gm.width * .60, gm.height * .05)
-        )
+        
+        score_text(gm)
         pg.display.flip()
 
 
@@ -90,15 +84,10 @@ def game_over_loop(gm: GameManager) -> None:
         background = pg.transform.scale(background, (gm.width, gm.height))
 
         gm.screen.blit(background, (0, 0))
-        display_text(
-            gm.text["game_over"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .91)
-        )
-        display_text(
-            [f"Score: {gm.score}"], gm.small_font, gm, Color.text, (gm.width * .1, gm.height * .04)
-        )
-        display_text(
-            [f"High Score: {gm.high_score}"], gm.small_font, gm, Color.text, (gm.width * .60, gm.height * .04)
-        )
+        
+
+        game_over_text(gm)
+        score_text(gm)
         pg.display.flip()
 
 
@@ -139,18 +128,35 @@ def process_events(gm: GameManager, snake: Snake=None) -> None:
                 snake.head.direction = Direction.left
 
 
-def display_text(lines_of_text: list, font: pg.font.Font, gm: GameManager, color: str, pos: tuple) -> None:
-    """Displays a list text to the screen."""
-    
-    font_size = 24
-    line_height = font_size + 1
+def menu_text(gm: GameManager) -> None:
+    """Display the menu text."""
 
-    for line_number, line_text in enumerate(lines_of_text):
-        text = font.render(line_text, True, color)
-        gm.screen.blit(
-            text,
-            (pos[0], pos[1] + line_number * line_height, gm.width - 10, gm.height - 10)
-        )
+    gm.screen.blit(
+        gm.small_font.render("Press Enter to play.", True, Color.text),
+        (gm.width * .50, gm.height * .94, gm.width, gm.height),
+    )
+
+
+def score_text(gm: GameManager) -> None:
+    """Display the game text."""
+    
+    gm.screen.blit(
+        gm.small_font.render(f"Score: {gm.score}", True, Color.text),
+        (gm.width * .1, gm.height * .04, gm.width, gm.height),
+    )
+    gm.screen.blit(
+        gm.small_font.render(f"High Score: {gm.high_score}", True, Color.text),
+        (gm.width * .60, gm.height * .04, gm.width, gm.height),
+    )
+
+
+def game_over_text(gm: GameManager) -> None:
+    """Display the game over text."""
+
+    gm.screen.blit(
+        gm.small_font.render("Press Enter to play again.", True, Color.text),
+        (gm.width * .1, gm.height * .91, gm.width, gm.height),
+    )
 
 
 def load_highscore() -> list:

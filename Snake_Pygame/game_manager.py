@@ -32,17 +32,6 @@ class GameManager:
         self.large_font: pg.font.Font = pg.font.Font(FontFiles.large, 72)
         self.small_font: pg.font.Font = pg.font.Font(FontFiles.small, 24)
 
-        self.text: dict = {
-            "menu": [
-                "Press 'ENTER' to",
-                "play the game.",
-            ],
-            "game_over": [
-                "Thanks for playing!",
-                "Press 'ENTER' to go to the main menu.",
-            ],
-        }
-
 
     def center(self) -> tuple:
         """Returns the center of the screen."""
