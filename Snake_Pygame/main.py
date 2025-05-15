@@ -21,9 +21,12 @@ def main():
     pg.mixer.music.play(-1)
 
     while gm.state != State.end_game:
-        menu_loop(gm)
-        game_loop(gm)
-        game_over_loop(gm)
+        try:
+            menu_loop(gm)
+            game_loop(gm)
+            game_over_loop(gm)
+        except UnboundLocalError:
+            break
 
     pg.quit()
     sys.exit()
